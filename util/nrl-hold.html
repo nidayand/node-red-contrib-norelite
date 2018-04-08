@@ -1,0 +1,67 @@
+<!-- *********************************************
+    Value node
+     ********************************************* -->
+<script type="text/x-red" data-template-name="nrl-hold in">
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-positive" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-positive" style="width: 70%;">Hold On action</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-negative" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-negative" style="width: 70%;">Hold Off action</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-from"><i class="fa fa-clock-o"></i> Hold from</label>
+        <select id="node-input-from" style="width:250px !important">
+          <option value="0">minimum when it changed state</option>
+          <option value="1">when a new state was received</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-timeout"><i class="fa fa-clock-o"></i> For</label>
+        <input type="text" id="node-input-timeout" placeholder="Time" style="direction:rtl; width:50px !important">
+        <select id="node-input-timeoutUnits" style="width:200px !important">
+          <option value="milliseconds">Milliseconds</option>
+          <option value="seconds">Seconds</option>
+          <option value="minutes">Minutes</option>
+          <option value="hours">Hours</option>
+          <option value="days">Days</option>
+        </select>
+    </div>
+</script>
+<script type="text/x-red" data-help-name="nrl-hold in">
+    <p>The <b>nrl-hold</b> node is used to hold an instruction for a certain amount of time if a change of action (On to Off or Off to On) is sent</p>
+    <p>Select if you want the timer to start when it changed state - setting a minimum time a value will be hold - or from when a message with a new state is received - e.g. when the the state is received it will hold the previous state for another X mins.</p>
+</script>
+<script type="text/javascript">
+    /* when opening the form */
+    RED.nodes.registerType('nrl-hold in', {
+        category: 'norelite_util-input',
+        color: "#FFCC66",
+        defaults: {
+            negative: {value: false},
+            positive: {value: true},
+            timeout: {value: 5, required: false, validate: RED.validators.number()},
+            timeoutUnits: {value: "minutes", required: false},
+            from: {value:1, required:true}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "fa-times-circle-o.png",
+        //align: "left",
+        label: function() {
+            var txt="";
+            if (this.positive || this.negative){
+                txt+="Hold";
+                txt+= (this.positive? " On":"");
+                txt+= (this.negative? ((this.positive? "/Off":" Off")) : "");
+            } else {
+                txt = "No hold";
+            }
+            return txt;
+        }
+    });
+</script>
+

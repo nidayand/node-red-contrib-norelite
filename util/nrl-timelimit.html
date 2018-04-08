@@ -1,0 +1,117 @@
+<!-- *********************************************
+    Limit on Time node
+     ********************************************* -->
+<script type="text/x-red" data-template-name="nrl-timelimit in">
+    <div class="form-row">
+        <label for="node-input-from"><i class="fa fa-clock-o"></i> From</label>
+        <input type="text" id="node-input-from" style=" width:50px">
+    </div>
+    <div class="form-row">
+        <label for="node-input-to"><i class="fa fa-clock-o"></i> To</label>
+        <input type="text" id="node-input-to" style=" width:50px">
+    </div>
+
+</script>
+<script type="text/x-red" data-help-name="nrl-timelimit in">
+    <p>Is used to filter the instructions based on the time of the day. If an incoming value has payload.status = 1 the value will be changed to payload.status = 0 if the current time is out of the selected values</p>
+    <p>The <b>output message</b> is in the format of an javascript object on <b>msg.payload</b> with the following structure: { lid : node.id, type: "rule", status : 1, value:100}. <ul>
+    <li><b>lid</b> is a sender identifier (usually the node id)</li>
+    <li><b>type</b> is from this node always "rule" but can in other nodes be "scenario" or "direct" (in the nrl-switch node messages from direct has precedence over scenario and scenario has precedence over rule)</li>
+    <li><b>status</b> is 0 or 1 depending if the rule is active or not</li>
+    <li><b>value</b> is the dim level of the switch (0-100) and will always be 100 from the rule node. Use nrl-value to modify the output</li>
+    </ul></p>
+</script>
+<script type="text/javascript">
+    /* when saving the form */
+    function oneditsave() {
+        var from = $("#node-input-from").val();
+        var to = $("#node-input-to").val();
+        var eval = function (v) {
+            if (v.indexOf(":") == -1) {
+                return false;
+            }
+            var tarr = v.split(":");
+            if (tarr.length != 2) {
+                return false;
+            }
+            var h = parseInt(tarr[0]);
+            if (isNaN(h) || h < 0 || h > 23) {
+                return false;
+            }
+            var m = parseInt(tarr[1]);
+            if (isNaN(m) || m < 0 || m > 59) {
+                return false;
+            }
+            return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m);
+        };
+        var nfrom = eval(from);
+        var nto = eval(to);
+        if (!nfrom){
+            alert("Invalid 24h value in From field");
+        } else {
+            $("#node-input-from").val(nfrom);
+        }
+        if (!nto){
+            alert("Invalid 24h value in To field");
+        } else {
+            $("#node-input-to").val(nto);
+        }
+    }
+    RED.nodes.registerType('nrl-timelimit in', {
+        category: 'norelite_util-input',
+        color: "#FFCC66",
+        defaults: {
+            to: {
+                value: "17:00",
+                required: true,
+                validate: function (v) {
+                    if (v.indexOf(":") == -1) {
+                        return false;
+                    }
+                    var tarr = v.split(":");
+                    if (tarr.length != 2) {
+                        return false;
+                    }
+                    var h = parseInt(tarr[0]);
+                    if (isNaN(h) || h < 0 || h > 23) {
+                        return false;
+                    }
+                    var m = parseInt(tarr[1]);
+                    if (isNaN(m) || m < 0 || m > 59) {
+                        return false;
+                    }
+                    return true;
+                }
+            },
+            from: {
+                value: "08:00",
+                required: true,
+                validate: function (v) {
+                    if (v.indexOf(":") == -1) {
+                        return false;
+                    }
+                    var tarr = v.split(":");
+                    if (tarr.length != 2) {
+                        return false;
+                    }
+                    var h = parseInt(tarr[0]);
+                    if (isNaN(h) || h < 0 || h > 23) {
+                        return false;
+                    }
+                    var m = parseInt(tarr[1]);
+                    if (isNaN(m) || m < 0 || m > 59) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "fa-clock-o.png",
+        label: function () {
+            return (this.from && this.to) ? (this.from + "-" + this.to) : "Undefined";
+        },
+        oneditsave: oneditsave
+    });
+</script>

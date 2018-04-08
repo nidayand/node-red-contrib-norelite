@@ -1,0 +1,163 @@
+<!-- *********************************************
+    source node
+     ********************************************* -->
+<script type="text/x-red" data-template-name="nrl-source out">
+    <div class="form-row">
+        <label for="node-input-config"><i class="fa fa-bookmark"></i> Config</label>
+        <input type="text" id="node-input-config">
+    </div>
+    <div class="form-row" id="default-details">
+        <label for="node-input-def"><i class="fa fa-bookmark"></i> Initial value</label>
+        <input type="text" id="node-input-def">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-expire" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-expire" style="width: 70%;">Value can expire</label>
+    </div>
+    <div id="expire-details">
+        <div class="form-row">
+            <label for="node-input-timeout"><i class="fa fa-clock-o"></i> For</label>
+            <input type="text" id="node-input-timeout" placeholder="Time" style="direction:rtl; width:50px !important">
+            <select id="node-input-timeoutUnits" style="width:200px !important">
+              <option value="milliseconds">Milliseconds</option>
+              <option value="seconds">Seconds</option>
+              <option value="minutes">Minutes</option>
+              <option value="hours">Hours</option>
+              <option value="days">Days</option>
+            </select>
+        </div>
+        <div class="form-row" id="expire-value">
+            <label for="node-input-expval"><i class="fa fa-bookmark"></i> Expiration value</label>
+            <input type="text" id="node-input-expval">
+        </div>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-toggle" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-toggle" style="width: 70%;">Toggle (0/1)</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-output" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-output" style="width: 70%;">Use output</label>
+    </div>
+    <div class="form-row" id="hysteresis-details">
+        <label for="node-input-hysteresis"><i class="fa fa-bookmark"></i> Hysteresis</label>
+        <input type="text" id="node-input-hysteresis" style="width:50px">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-bookmark"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+</script>
+<script type="text/x-red" data-help-name="nrl-source out">
+    <p>Will store the current value in a datasource and trigger any <b>nrl-eval</b> nodes that have rules that are using this datasource for evaluation.</p>
+    <p><b>Config</b> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules). <b>Rule delay</b> value is used for rules to wait before sending out a message as sometimes multiple sources gets updated close to eachother and this variable can avoid unnecessary output messages.</p>
+    <p><b>Initial value</b> is sent, if available, 1 sec after a flow has been deployed.</p>
+    <p>If the value should only be valid for a certain period mark the <b>expiration flag</b> and define for how long it will be valid. It is also important to define the value that should be set for the datasource when it is expired. Default is "false"</p>
+    <p>If <b>toggle</b> is enabled it will toggle the value between 0 and 1 and it will always initiate with 0.</p>
+    <p>If you want to do further processing of the value in the node you can use the <b>output flag</b> to output the value into another node.</p>
+    <p>The <b>Hysteresis</b> number is used to avoid switching on/off if the values are closed to what has been set in the rules. E.g. 0.1 if you would require a new value to be at least 0.1 from the previous value in order to have the value changed. This is only applicable for numbers and not strings and it should be a positive number (>=0). If set to 0 it is disabled.</p>
+    <p><b>Name</b> is important as it will be used in the rule node (nrl-rule).</p>
+</script>
+<script type="text/javascript">
+  function oneditprepareDatasource() {
+    $("#node-input-expire").change(function() {
+      if ($("#node-input-expire").is(':checked')) {
+        $("#expire-details").show();
+      } else {
+        $("#expire-details").hide();
+      }
+    });
+    $("#node-input-toggle").change(function() {
+      if ($("#node-input-toggle").is(':checked')) {
+        $("#default-details").hide();
+        $("#expire-value").hide();
+        $("#hysteresis-details").hide();
+      } else {
+        $("#default-details").show();
+        $("#expire-value").show();
+        $("#hysteresis-details").show();
+      }
+    });
+  }
+  RED.nodes.registerType('nrl-source out', {
+    category: 'norelite-output',
+    color: "#E2D96E",
+    defaults: {
+      config: {
+        type: "nrl-config",
+        required: true
+      },
+      name: {
+        value: "",
+        required: true
+      },
+      def: {
+        value: "",
+        required: false
+      },
+      expire: {
+        value: false,
+        required: true
+      },
+      timeout: {
+        value: 100,
+        required: false,
+        validate: RED.validators.number()
+      },
+      timeoutUnits: {
+        value: "seconds",
+        required: false
+      },
+      expval: {
+        value: false,
+        required: false
+      },
+      output: {
+        value: false,
+        required: true
+      },
+      hysteresis: {
+        value: 0,
+        required: true,
+        validate: RED.validators.number()
+      },
+      toggle: {
+        value: false,
+        required: true
+      },
+      outputs: {
+        value: 0
+      } //Storing if outputs is enabled. To be able to copy the node.
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "fa-hdd-o.png",
+    align: "right",
+    label: function() {
+      return (this.name || "undefined");
+    },
+    oneditprepare: oneditprepareDatasource,
+    oneditsave: function() {
+      var node = this;
+      if ($("#node-input-output").is(":checked")) {
+        node.outputs = 1;
+      } else {
+        node.outputs = 0;
+      }
+      //Set default value =0 when toggle mode is on
+      //and hysteresis to 0
+      if ($("#node-input-toggle").is(":checked")) {
+        $("#node-input-def").val('0');
+        $("#node-input-hysteresis").val('0');
+        //If expiration is set, set the expiration value to 0
+        if ($("#node-input-expire").is(":checked")) {
+          $("#node-input-expval").val('0');
+        }
+      }
+    }
+  });
+</script>
