@@ -69,10 +69,6 @@ module.exports = function (RED) {
       out_msg.reset(true); //Reset to negative values
 
       _.each(self.allIds, function (cid) {
-        //Skip all that are not active
-        if (!cid.is_enabled()) {
-          return;
-        }
         if (cid.getType() > out_msg.getType()) {
 
           //If the type is higher copy all content to output msg
