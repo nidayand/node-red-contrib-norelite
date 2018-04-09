@@ -1,0 +1,96 @@
+<script type="text/x-red" data-template-name="nrl-set in">
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-override" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-override" style="width: 70%;">Override only if incoming is enabled</label>
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-bookmark"></i> Enabled</label>
+        <select id="node-input-enabled">
+          <option value="-1">* Don't change *</option>
+          <option value="1">Enable</option>
+          <option value="0">Disable</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-bookmark"></i> Type</label>
+        <select id="node-input-istype">
+          <option value="-1">* Don't change *</option>
+          <option value="0">Normal (0)</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-dim"><i class="fa fa-bookmark"></i> Dim</label>
+        <input type="text" id="node-input-dim" style="width:50px !important">%
+    </div>
+    <div class="form-row">
+        <label for="node-input-color"><i class="fa fa-bookmark"></i> Color</label>
+        <input type="text" id="node-input-color">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-bookmark"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="nrl-set in">
+    <p>Overrides incoming values with parameters set in the node</p><p><b>Override only if incoming is enabled</b>&nbsp;will only change the values if the incoming message is enabled (msg.payload.enabled = true).</p><p><b>Enabled</b>&nbsp;can be set to remain as the incoming msg.payload.enabled or override with true or false</p><p><b>Type</b>&nbsp;is used for prioritizing messages in the nrl-switch node. Normal setting is '0' and if you want to override other messages in the nrl-switch node with the message from a subflow simply increase this value</p><p><b>Dim</b>&nbsp;can be used to override the dim value. Valid options are 0-100. If the value is empty, the inbound value will remain</p><p><b>Color</b>&nbsp;can be used used to override the color value and it should be an hex value including '#'. E.g. #FFFFFF for white. If the value is empty, the inbound value will remain</p>
+</script>
+<script type="text/javascript">
+  RED.nodes.registerType('nrl-set in', {
+    category: 'norelite_util-input',
+    color: "#FFCC66",
+    defaults: {
+      override: {
+        value: false,
+        required: true
+      },
+      name: {
+        value: "",
+        required: true
+      },
+      enabled: {
+        value: "-1",
+        required: true
+      },
+      istype: {
+        value: "-1",
+        required: true
+      },
+      dim: {
+        value: "",
+        required: false
+      },
+      color: {
+        value: "",
+        required: false
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "arrow-in.png",
+    label: function() {
+      return (this.name || "undefined");
+    },
+    oneditsave: function() {
+      if ($('#node-input-dim').val().trim().length > 0 && (isNaN($('#node-input-dim').val().trim()) ||
+          $('#node-input-dim').val().trim() > 100)) {
+        alert('Dim must be empty or 0-100');
+      }
+
+      if ($('#node-input-color').val().trim().length > 0){
+        var isOk  = /^#[0-9A-F]{6}$/i.test($('#node-input-color').val().trim());
+        if (!isOk){
+          alert('Please enter a proper HEX value or leave empty');
+        } else {
+          $('#node-input-color').val($('#node-input-color').val().trim().toUpperCase());
+        }
+      }
+    }
+  });
+</script>
+

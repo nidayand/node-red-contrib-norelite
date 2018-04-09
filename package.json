@@ -40,6 +40,7 @@
       "nrl-hold in": "util/nrl-hold.js",
       "nrl-timelimit in": "util/nrl-timelimit.js",
       "nrl-value in": "util/nrl-value.js",
+      "nrl-set in": "util/nrl-set.js",
       "nrl-rfxcom-out": "device/nrl-rfxcom.js",
       "nrl-tellstick-out": "device/nrl-tellstick.js",
       "nrl-zwave-out": "device/nrl-zwave.js",
