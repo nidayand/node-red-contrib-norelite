@@ -32,8 +32,7 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-hold in">
-    <p>The <b>nrl-hold</b> node is used to hold an instruction for a certain amount of time if a change of action (On to Off or Off to On) is sent</p>
-    <p>Select if you want the timer to start when it changed state - setting a minimum time a value will be hold - or from when a message with a new state is received - e.g. when the the state is received it will hold the previous state for another X mins.</p>
+    <p>Hols an instruction for a certain amount of time</p><p><b>Hold On</b>&nbsp;defines if an enabled message should be hold. I.e. msg.payload.enabled = true.</p><p><b>Hold Off</b>&nbsp;defines is an disabled message should be hold. I.e. msg.payload.enabled = false.</p><p><b>Hold from</b>&nbsp;defines from where the timer starts:</p><ul><li>when a new state is received - E.g. it is set to "Hold On" and a new message where msg.payload.enabled = false, the timer starts when that message is received</li><li>minimum when it changed state - E.g. it is set to "Hold On" and currest state is disabled (msg.payload.enabled = false) and when the enabled message is received the timer is started. If a subsequent message where the state is disabled after the hold time has expired it will change immidiately</li></ul><p><b>For</b>&nbsp;is to set the timout value.</p>
 </script>
 <script type="text/javascript">
     /* when opening the form */
