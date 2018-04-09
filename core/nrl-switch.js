@@ -128,12 +128,7 @@ module.exports = function (RED) {
         self.prevMsg = msg;
       }
 
-      //Set status message
-      var state = 1;
-      if (!msg.is_enabled() || msg.getDim() === 0) {
-        state = -1;
-      }
-      common.setStatus(self, state, (msg.getType() == -1 ? "Inactive" : msg.getType()) + "/" + msg.getDim() + "%");
+      common.setStatus(self, msg.is_enabled() ? 1 : -1, msg.getType() +'/'+msg.getDim() + '%');
     }
 
 
