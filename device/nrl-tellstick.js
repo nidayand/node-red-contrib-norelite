@@ -18,7 +18,7 @@ module.exports = function (RED) {
 
     /* When a message is received */
     self.on("input", function (msg) {
-      var omsg = new Message(msg);
+      var omsg = new Message(self, msg);
 
       var nmsg = {
         device: self.code
