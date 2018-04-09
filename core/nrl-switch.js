@@ -76,12 +76,17 @@ module.exports = function (RED) {
           self.activeId = cid.getId();
 
         } else if (cid.getType() == out_msg.getType()) {
-          /* Always use the higest value of dim and if it is
-          higher set the color to the same */
+          //Same type
 
-          if (cid.getDim() > out_msg.getDim()) {
-            out_msg.setDim(cid.getDim());
-            out_msg.setColor(cid.getColor());
+          if (cid.is_enabled() && !out_msg.is_enabled()){
+            //Enabled has higher preference than disabled
+            out_msg.copy(cid);
+            self.activeId = cid.getId();
+
+          } else if (cid.is_enabled() && cid.getDim() > out_msg.getDim()) {
+            /* Always use the higest value of dim and if it is
+            higher set the color to the same */
+            out_msg.copy(cid);
             self.activeId = cid.getId();
           }
         } //if rule
