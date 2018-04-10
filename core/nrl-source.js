@@ -20,6 +20,7 @@ module.exports = function (RED) {
     this.exptimer = null; //Expire timer
     this.hysteresis = n.hysteresis;
     this.def = n.def; //Default value
+    this.uid = n.uid;
     this.toggle = n.toggle; //Toggle is active
 
     var self = this;
@@ -114,7 +115,7 @@ module.exports = function (RED) {
       }
 
       //Send the message to emitter then send it further
-      self.configNode.emitConfig(self.id, msg.payload);
+      self.configNode.emitConfig(self.uid, msg.payload);
 
       //If there is an output send the message
       if (self.output) {
@@ -129,7 +130,7 @@ module.exports = function (RED) {
         }
         self.exptimer = setTimeout(function () {
           common.log(self, "Input value has expired");
-          self.configNode.emitConfig(self.id, self.expval);
+          self.configNode.emitConfig(self.uid, self.expval);
           if (self.output) {
             self.send({
               payload: self.expval

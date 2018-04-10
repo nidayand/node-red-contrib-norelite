@@ -49,6 +49,7 @@
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-bookmark"></i> Name</label>
         <input type="text" id="node-input-name">
+        <input type="hidden" id="node-input-uid"/>
     </div>
 
 </script>
@@ -82,6 +83,10 @@
     defaults: {
       config: {
         type: "nrl-config",
+        required: true
+      },
+      uid: {
+        value: "",
         required: true
       },
       name: {
@@ -151,6 +156,38 @@
           $("#node-input-expval").val('0');
         }
       }
+    },
+    onpaletteadd: function(){
+      /* Monitor if a node is added and generate a unique id based on
+      timestamp. This timestamp is used to create the MQTT message and
+      the nrl-eval nodes knows to which message to subscribe to */
+      RED.events.on('nodes:add', function(n){
+        if (n.type == 'nrl-source out'){
+          //Generate GUID
+          var S4 = function(){
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+          }
+          var guid = function(){
+            return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+          }
+
+          if (n.uid == ''){
+            // if uid is empty fill with guid
+            n.uid = guid();
+          } else {
+            /* if uid is available, check that there are no
+            other nodes with the same id. If available generate
+            a new. This enables copy of nodes as well as importing
+            of flows/nodes */
+            RED.nodes.eachNode(function(cf){
+              if (cf.type == 'nrl-source out' && cf.uid == n.uid && cf.id !== n.id){
+                n.uid = guid();
+              }
+            });
+          }
+
+        }
+      });
     }
   });
 </script>

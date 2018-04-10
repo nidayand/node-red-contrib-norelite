@@ -93,7 +93,7 @@
                 //Add sources
                 var selectSource = $('<select/>',{class:"node-input-rule-source", style:"width:120px; margin-left: 5px; text-align: left;"}).appendTo(row);
                 for (var d in sourceAllList) {
-                    selectSource.append($("<option></option>").val(sourceAllList[d].id).text(sourceAllList[d].name));
+                    selectSource.append($("<option></option>").val(sourceAllList[d].uid).text(sourceAllList[d].name));
                 }
                 //Add compare
                 var selectField = $('<select/>',{class:"node-input-rule-compare", style:"width:120px; margin-left: 5px; text-align: center;"}).appendTo(row);
