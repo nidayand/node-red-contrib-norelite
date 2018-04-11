@@ -1,0 +1,32 @@
+<script type="text/x-red" data-template-name="nrl-tradfri-out">
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-dimmable" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-dimmable" style="width: 70%;">Dimmable</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-code"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="nrl-tradfri-out">
+    <p>The node will convert the norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-node-tradfri">node-red-contrib-tradfri</a> input format.</p>
+    <p>Mark if the hardware device is <b>dimmable</b> or not. Note: If it is not marked dimmable and msg.payload.dim > 0 it will still turn on</p>
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('nrl-tradfri-out', {
+        category: 'norelite_device-output',
+        color: "#A6BBCF",
+        defaults: {
+            name: {value: "", required: true},
+            dimmable: {value: false, required: true}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "light.png",
+        align: "right",
+        label: function() {
+            return (this.name || "undefined");
+        }
+    });
+</script>
