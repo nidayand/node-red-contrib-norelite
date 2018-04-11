@@ -1,6 +1,6 @@
 # node-red-contrib-norelite [![npm version](https://badge.fury.io/js/node-red-contrib-norelite.svg)](https://badge.fury.io/js/node-red-contrib-norelite)
-A set of Node-RED nodes to ease the implementation of your home automation requirements. 
-The package is the successor to the npm package [**norelite**](https://www.npmjs.com/package/norelite). The package/repo was changed due to a major restructuring and changes to the code base as well as the interaction format between the nodes has changed. 
+A set of Node-RED nodes to ease the implementation of your home automation requirements.
+The package is the successor to the npm package [**norelite**](https://www.npmjs.com/package/norelite). The package/repo was changed due to a major restructuring and changes to the code base as well as the interaction format between the nodes has changed.
 ## Install
 ```bash
 cd ~/.node-red
@@ -37,6 +37,7 @@ The nodes are divided into 3 categories:
     - `nrl-tellstick`: Converts to a message compatible with [node-red-contrib-tellstick](https://www.npmjs.com/package/node-red-contrib-tellstick)
     - `nrl-rfxcom`: Converts to a message compatible with [node-red-contrib-rfxcom](https://www.npmjs.com/package/node-red-contrib-rfxcom)
     - `nrl-zwave`: Converts to a message compatible with [node-red-contrib-openzwave](https://www.npmjs.com/package/node-red-contrib-openzwave)
+    - `nrl-tradfri`: Converts to a message compatible with [node-red-contrib-tradfri](https://www.npmjs.com/package/node-red-contrib-tradfri)
 
 Let me know if you have created more nodes that I can add to this list.
 
