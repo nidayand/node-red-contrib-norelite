@@ -26,7 +26,7 @@ module.exports = function (RED) {
 
       nmsg.payload = {
         brightness: brightness,
-        state: (omsg.is_enabled() ? 'on' : 'off'),
+        state: ((omsg.is_enabled() || brightness == 0) ? 'on' : 'off'),
         color: omsg.getColor().replace('#', '').toLowerCase(),
         transistiontime: 0
       };
