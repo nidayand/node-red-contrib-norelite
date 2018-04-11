@@ -1,13 +1,13 @@
-# node-red-contrib-norelite
+# node-red-contrib-norelite [![npm version](https://badge.fury.io/js/node-red-contrib-norelite.svg)](https://badge.fury.io/js/node-red-contrib-norelite)
 A set of Node-RED nodes to ease the implementation of your home automation requirements. 
-The package is the successor to the npm package [**norelite**](https://github.com/nidayand/norelite). The package/repo was changed due to a major restructuring and changes to the code base as well as the interaction format between the nodes has changed. 
+The package is the successor to the npm package [**norelite**](https://www.npmjs.com/package/norelite). The package/repo was changed due to a major restructuring and changes to the code base as well as the interaction format between the nodes has changed. 
 ## Install
 ```bash
 cd ~/.node-red
 npm install node-red-contrib-norelite
 ```
 **Additional nodes** that can be used with **node-red-contrib-norelite** but due to licensing restrictions is not part of this repo can be found here:
-- [node-red-contrib-norelite-color](https://github.com/nidayand/node-red-contrib-norelite-color) : To change the color instruction in a message. Uses [jscolor lib](http://jscolor.com/) that is under [GNU GPL license v3](http://www.gnu.org/licenses/gpl-3.0.txt)
+- [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) : To change the color instruction in a message. Uses [jscolor lib](http://jscolor.com/) that is under [GNU GPL license v3](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## What is it?
 Simplified, **node-red-contrib-norelite** is a set of Node-RED nodes that are designed to managed your simple and complex rules that controls your IoT enabled devices. It includes plenty of nodes to manage incoming values, create rules based on the values, utilities to change the instructions and and some device nodes to convert the instructions into a message that can be understood by the transmitting node that finally will transmit the instruction to your IoT device such as a lamp or power switch.
@@ -32,7 +32,7 @@ The nodes are divided into 3 categories:
     - `nrl-hold`: Hold the state for a defined time
     - `nrl-set`: Overrides the incoming values
     - `nrl-value`: Changes the dim value
-    - (`nrl-color` is found in [node-red-contrib-norelite-color](https://github.com/nidayand/node-red-contrib-norelite-color) package): Changes the color value in HEX
+    - (`nrl-color` is found in [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) package): Changes the color value in HEX
 - **Device**
     - `nrl-tellstick`: Converts to a message compatible with [node-red-contrib-tellstick](https://www.npmjs.com/package/node-red-contrib-tellstick)
     - `nrl-rfxcom`: Converts to a message compatible with [node-red-contrib-rfxcom](https://www.npmjs.com/package/node-red-contrib-rfxcom)
