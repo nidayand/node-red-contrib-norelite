@@ -17,24 +17,23 @@ module.exports = function (RED) {
 
       var nmsg = {};
 
-      //brightness: 255, state: 'on', color: 'ffffff'}
-
-      var brightness = 255;
+      var brightness = 254;
       if (self.dimmable) {
-        brightness = Math.round(omsg.getDim() / 100 * 255);
+        brightness = Math.round(omsg.getDim() / 100 * 254);
       }
 
-      nmsg.payload = {
-        brightness: brightness,
-        state: (!(!omsg.is_enabled() || brightness == 0) ? 'on' : 'off'),
-        color: omsg.getColor().replace('#', '').toLowerCase(),
-        transistiontime: 0
-      };
-
-      // Set node text
       var state = -1;
       if (!(!omsg.is_enabled() || brightness == 0))
         state = 1;
+
+      nmsg.payload = {
+        brightness: (state == 1) ? brightness: 0,
+        state: (state == 1) ? 'on' : 'off',
+        color: omsg.getColor(),
+        transistiontime: 1
+      };
+
+      // Set node text
       var txt = (state == 1 ? "On" : "Off");
       if (self.dimmable && state == 1)
         txt = "Dim " + omsg.getDim() + "%";
