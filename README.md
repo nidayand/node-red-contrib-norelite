@@ -34,6 +34,7 @@ The nodes are divided into 3 categories:
     - `nrl-value`: Changes the dim value
     - (`nrl-color` is found in [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) package): Changes the color value in HEX
 - **Device**
+     - `nrl-tradfri`: Converts to a message compatible with [node-red-contrib-tradfri](https://www.npmjs.com/package/node-red-contrib-tradfri)
     - `nrl-tellstick`: Converts to a message compatible with [node-red-contrib-tellstick](https://www.npmjs.com/package/node-red-contrib-tellstick)
     - `nrl-rfxcom`: Converts to a message compatible with [node-red-contrib-rfxcom](https://www.npmjs.com/package/node-red-contrib-rfxcom)
     - `nrl-zwave`: Converts to a message compatible with [node-red-contrib-openzwave](https://www.npmjs.com/package/node-red-contrib-openzwave)
