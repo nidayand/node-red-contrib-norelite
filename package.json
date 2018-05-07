@@ -33,7 +33,7 @@
     "nodes": {
       "nrl-config": "core/nrl-config.js",
       "nrl-eval in": "core/nrl-eval.js",
-      "nrl-gate in": "core/nrl-gate.js",
+      "nrl-gate in": "util/nrl-gate.js",
       "nrl-source out": "core/nrl-source.js",
       "nrl-switch out": "core/nrl-switch.js",
       "nrl-limit": "core/nrl-limit.js",
