@@ -124,7 +124,9 @@ module.exports = function (RED) {
         // Has received a new message. Send if the gate is open
         self.on("input", function(msg){
             if (self.gateopen){
-                self.send(msg);
+                self.send([msg,null]);
+            } else {
+                self.send([null,msg]);
             }
         });
 

@@ -23,9 +23,9 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-gate in">
-   <p>Is a <strong>gateway</strong> for any type of message and it is passed through if the gate is open.</p>
-<p>The big difference from&nbsp;<strong>nrl-eval</strong> is that this node will not generate any message but only pass through a message if the gate is open. I.e. the rules are true.</p>
-<p><strong>Config</strong> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules).&nbsp;</p>
+   <p>Is a <strong>gateway</strong> for any type of message and it is passed through if the gate is open to the first output.</p>
+<p>The big difference from&nbsp;<strong>nrl-eval</strong> is that this node will not generate any message and based if the rules are true will pass the message to the first output or if false pass it to the second output.</p>
+<p><strong>Config</strong> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules).</p>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-gate in', {
@@ -38,7 +38,7 @@
             checkall: {value:"true", required:true}
         },
         inputs: 1,
-        outputs: 1,
+        outputs: 2,
         icon: "gate.png",
         label: function() {
             return (this.name || "undefined");
