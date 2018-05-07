@@ -34,6 +34,7 @@ module.exports = function (RED) {
         this.timeouttimer;  //Timer for managing a delay in send (if there are many incoming messages)
         this.values = []; //Keeping all the inbound messages
         this.outputdelay = n.outputdelay;
+        this.disablerepeat = n.disablerepeat;
         this.name = n.name;
         var self = this;
 
@@ -128,8 +129,8 @@ module.exports = function (RED) {
                 self.timeouttimer = setTimeout(function(){
                     self.send(msg.toMessageObject());
 
-                    //Only setup repeat for top eval node
-                    if (!self.inputson){
+                    //Only setup repeat for top eval node and if not explicitly disabled
+                    if (!self.inputson && !self.disablerepeat){
                         self.repeattimer = setInterval(self.assessRules, 60*1000);
                     }
                 }, self.outputdelay ? 0 : (parseInt(self.configNode.delay)*1000));

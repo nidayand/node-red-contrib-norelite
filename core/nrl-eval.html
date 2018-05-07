@@ -21,11 +21,12 @@
         </select>
     </div>
     <div class="form-row">
-        <label>&nbsp;</label>
         <input type="checkbox" id="node-input-inputson" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-inputson" style="vertical-align: top;">Use input</label>
         <input type="checkbox" id="node-input-outputdelay" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-outputdelay" style="vertical-align: top;">No output delay</label>
+        <input type="checkbox" id="node-input-disablerepeat" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-disablerepeat" style="vertical-align: top;">No repeat messages</label>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -33,7 +34,11 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-eval in">
-   <p>Evaluates rules based on the sources used and will output an message with the result of rule evaluation that is used by subsequent nodes.</p><p><b>Config</b> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules). <b>Rule delay</b> value is used for rules to wait before sending out a message as sometimes multiple sources gets updated close to eachother and this variable can avoid unnecessary output messages.</p><p>If <b>Use input</b> is active then inbound message will be used to forward with the<b> enable flag</b> unchanged if the rule is true or msg.payload.enabled = false if the rule is false. No other parameter will be changed from the inbound message.</p><p>Check <b>No output delay</b> to override the global delay value as specified in the <b>Config</b>.</p>
+   <p>Evaluates rules based on the sources used and will output an message with the result of rule evaluation that is used by subsequent nodes.</p>
+<p><strong>Config</strong> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules). <strong>Rule delay</strong> value is used for rules to wait before sending out a message as sometimes multiple sources gets updated close to eachother and this variable can avoid unnecessary output messages.</p>
+<p>If <strong>Use input</strong> is active then inbound message will be used to forward with the<strong> enable flag</strong> unchanged if the rule is true or msg.payload.enabled = false if the rule is false. No other parameter will be changed from the inbound message.</p>
+<p>By default the node will resend the message once a minute. If you want to disable this, check&nbsp;<strong>No repeat messages</strong> to avoid sending repeats of the message.</p>
+<p>Check <strong>No output delay</strong> to override the global delay value as specified in the <strong>Config</strong>.</p>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-eval in', {
@@ -46,6 +51,7 @@
             checkall: {value:"true", required:true},
             inputson: {value: false, required:true},
             outputdelay: {value: false, required:true},
+            disablerepeat: {value: false, required: false},
             inputs: {value: 0} //Storing if inputs is enabled. To be able to copy the node.
         },
         inputs: 0,
