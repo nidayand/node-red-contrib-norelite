@@ -1,0 +1,28 @@
+<!-- *********************************************
+    Value node
+     ********************************************* -->
+<script type="text/x-red" data-template-name="nrl-route in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-bookmark"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="nrl-route in">
+    <p>Routes payload.enabled = true messages to the first output and payload.enabled = false to the second output</p>
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('nrl-route in', {
+        category: 'norelite_util-input',
+        color: "#FFCC66",
+        defaults: {
+            name: {value: "", required:false}
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: "route.png",
+        label: function() {
+          return (this.name || "route");
+        }
+    });
+</script>
+

@@ -39,6 +39,7 @@
       "nrl-limit": "core/nrl-limit.js",
       "nrl-dayslimit in": "util/nrl-dayslimit.js",
       "nrl-hold in": "util/nrl-hold.js",
+      "nrl-route in": "util/nrl-route.js",
       "nrl-timelimit in": "util/nrl-timelimit.js",
       "nrl-value in": "util/nrl-value.js",
       "nrl-set in": "util/nrl-set.js",
