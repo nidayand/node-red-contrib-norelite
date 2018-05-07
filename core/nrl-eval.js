@@ -117,14 +117,25 @@ module.exports = function (RED) {
                     }
                 }
             } else {
-                msg.disable();
-                common.setStatus(self, -1, "Inactive "+numbersTrue+"/"+self.rules.length);
+                // If not all values have been received and checks for all rules
+                if (self.checkall && self.values.length !== self.rules.length){
+                    common.setStatus(self, 0, "Init "+numbersTrue+"/"+self.rules.length);
+
+                    //Reset message
+                    msg = null;
+                } else {
+                    msg.disable();
+                    common.setStatus(self, -1, "Inactive "+numbersTrue+"/"+self.rules.length);
+                }
             }
 
 
-            /* Only send out the message if no input is used or if a new base payload has been received */
-            if (!self.inputson || self.inputreceived){
-
+            /*
+            Only send out the message if no input is used or if a new base payload has been received.
+            If msg == null don't bother. It is null if it should check for all rules and not all values
+            yet been have been received
+            */
+            if ((!self.inputson || self.inputreceived) && msg){
                 //Send the message
                 self.timeouttimer = setTimeout(function(){
                     self.send(msg.toMessageObject());
