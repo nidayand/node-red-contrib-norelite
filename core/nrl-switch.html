@@ -29,7 +29,7 @@
         <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Send code</label>
         <input type="text" id="node-input-times" placeholder="Number">
     </div>
-    <div class="form-row">
+    <div id="repeat-details" class="form-row">
         <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Repeat every</label>
         <input type="text" id="node-input-repeat" placeholder="Time" style="direction:rtl; width:50px !important">
         <select id="node-input-repeatUnits" style="width:200px !important">
@@ -39,6 +39,11 @@
           <option value="hours">Hours</option>
           <option value="days">Days</option>
         </select>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-once" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-once" style="width: 70%;">Disable repeat</label>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-bookmark"></i> Name</label>
@@ -54,17 +59,27 @@
         category: 'norelite-output',
         color: "#E2D96E",
         defaults: {
-            name: {value: "", required: true},
+            name: {value: "", required: false},
             times: {type: "nrl-switch-config", required: true},
             repeat: {value: 10, required: true, validate: RED.validators.number()},
-            repeatUnits: {value: "minutes", required: false}
+            repeatUnits: {value: "minutes", required: false},
+            once: {value: false, required: false}
         },
         inputs: 1,
         outputs: 1,
         icon: "fa-power-off.png",
         align: "right",
         label: function() {
-            return (this.name || "undefined");
+            return (this.name || "switch");
+        },
+        oneditprepare: function(){
+            $("#node-input-once").change(function() {
+              if ($("#node-input-once").is(':checked')) {
+                $("#repeat-details").hide();
+              } else {
+                $("#repeat-details").show();
+              }
+            });
         }
     });
 </script>

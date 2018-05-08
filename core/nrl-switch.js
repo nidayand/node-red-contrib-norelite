@@ -22,6 +22,7 @@ module.exports = function (RED) {
     this.times = RED.nodes.getNode(n.times).times;
     this.name = n.name;
     this.timer = null;
+    this.once = n.once;
     var self = this;
 
     //timeout
@@ -119,10 +120,12 @@ module.exports = function (RED) {
           self.send(msg.toMessageObject());
         }
 
-        //Set timer for repeat function
-        self.timer = setTimeout(function () {
-          self.sendMsg(true)
-        }, self.repeat);
+        //Set timer for repeat function if it has not been disabled
+        if (!self.once){
+          self.timer = setTimeout(function () {
+            self.sendMsg(true)
+          }, self.repeat);
+        }
 
         //Save current message for review next time the method is called
         self.prevMsg = msg;
