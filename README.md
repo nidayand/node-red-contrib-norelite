@@ -19,6 +19,16 @@ The simplest flow of events is:
 
 But there is much more to it... and the nodes should be well described in the node descriptions.
 
+
+## Basic structure and order ##
+1. Collect data - use nrl-source to store the data to be used by the nrl-eval nodes
+2. Define action flows
+    1. Evaluate rules - use nrl-eval or nrl-on to start a new flow
+    2. Apply filters - use utility nodes
+    3. Calculate final instruction - use nrl-switch that can take multiple inputs
+    4. Convert the instruction for the device that is to be controlled - use device nodes
+    5. Connect to transmitting nodes or go through nrl-limit to limit the load on the transmitting node (e.g. node-red-contrib-tellstick)
+
 ### The nodes are divided into 3 categories ###
 **( * )**: Message in/out should support the messaging format as per below
 - **Core**
