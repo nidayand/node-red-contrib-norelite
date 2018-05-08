@@ -19,26 +19,29 @@ The simplest flow of events is:
 
 But there is much more to it... and the nodes should be well described in the node descriptions.
 
-The nodes are divided into 3 categories:
+### The nodes are divided into 3 categories ###
+**( * )**: Message in/out should support the messaging format as per below
 - **Core**
-    - `nrl-source`: Stores incoming values
-    - `nrl-eval`: Evalutes the values
-    - `nrl-limit`: Can be used to intelligently limit load on the transmitting node
-    - `nrl-on`: Always send on **turn on** instruction
-    - `nrl-switch`: Takes multiple inputs, session persistent storage of the messages, calculates the outbound message and onsly sends an instruction if the result has changed
+    - `nrl-source`: Stores incoming values. Stateful
+    - `nrl-eval`: Evalutes the values and generates a message. Stateful (*)
+    - `nrl-limit`: Can be used to intelligently limit load on the transmitting node. Input should come from a **Device node** as the messaging format is unique for this node
+    - `nrl-on`: Always send on **turn on** instruction. Stateful (*)
+    - `nrl-switch`: Takes multiple inputs, session persistent storage of the messages, calculates the outbound message and onsly sends an instruction if the result has changed. Stateful (*)
 - **Util**
-    - `nrl-dayslimit`: Filters based on weekday
-    - `nrl-timelimit`: Filters based on time of day
-    - `nrl-hold`: Hold the state for a defined time
-    - `nrl-set`: Overrides the incoming values
-    - `nrl-value`: Changes the dim value
-    - (`nrl-color` is found in [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) package): Changes the color value in HEX
+    - `nrl-dayslimit`: Filters based on weekday (*)
+    - `nrl-timelimit`: Filters based on time of day (*)
+    - `nrl-hold`: Hold the state for a defined time (*)
+    - `nrl-set`: Overrides the incoming values (*)
+    - `nrl-value`: Changes the dim value (*)
+    - `nrl-gate`: Routes message based on rules (2 outputs). Similar to nrl-eval but is stateless and the inbound message can be of any format
+    - `nrl-route`: Routes message based on msg.payload.enabled (2 outputs). See messaging format below. (*)
+    - (`nrl-color` is found in [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) package): Changes the color value in HEX (*)
 - **Device**
-     - `nrl-tradfri`: Converts to a message compatible with [node-red-contrib-tradfri](https://www.npmjs.com/package/node-red-contrib-tradfri)
-    - `nrl-tellstick`: Converts to a message compatible with [node-red-contrib-tellstick](https://www.npmjs.com/package/node-red-contrib-tellstick)
-    - `nrl-rfxcom`: Converts to a message compatible with [node-red-contrib-rfxcom](https://www.npmjs.com/package/node-red-contrib-rfxcom)
-    - `nrl-zwave`: Converts to a message compatible with [node-red-contrib-openzwave](https://www.npmjs.com/package/node-red-contrib-openzwave)
-    - `nrl-tradfri`: Converts to a message compatible with [node-red-contrib-tradfri](https://www.npmjs.com/package/node-red-contrib-tradfri)
+     - `nrl-tradfri`: Converts to a message compatible with [node-red-contrib-tradfri](https://www.npmjs.com/package/node-red-contrib-tradfri) (*)
+    - `nrl-tellstick`: Converts to a message compatible with [node-red-contrib-tellstick](https://www.npmjs.com/package/node-red-contrib-tellstick) (*)
+    - `nrl-rfxcom`: Converts to a message compatible with [node-red-contrib-rfxcom](https://www.npmjs.com/package/node-red-contrib-rfxcom) (*)
+    - `nrl-zwave`: Converts to a message compatible with [node-red-contrib-openzwave](https://www.npmjs.com/package/node-red-contrib-openzwave) (*)
+    - `nrl-tradfri`: Converts to a message compatible with [node-red-contrib-tradfri](https://www.npmjs.com/package/node-red-contrib-tradfri) (*)
 
 Let me know if you have created more nodes that I can add to this list.
 
