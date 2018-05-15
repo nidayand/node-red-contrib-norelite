@@ -5,6 +5,7 @@ module.exports = function (RED) {
   var _ = require('underscore');
   var EventEmitter = require('events').EventEmitter;
   var common = require("../lib/common");
+  var Message = require("../lib/msg");
 
   /*******************************************
   Source node
@@ -60,7 +61,21 @@ module.exports = function (RED) {
       }
     }
 
+    /*
+    A method to make sure that a value is only sent once to the rules that
+    are subscribing to the source. If the value changes it will send a new
+    event
+    */
+    self.lastSendPayload;
+    self.sendToRules = function (payload){
+      if (typeof self.lastSendPayload == "undefined" ||
+          (typeof self.lastSendPayload !== "undefined" && self.lastSendPayload != payload))
+        self.configNode.emitConfig(self.uid, payload);
+      self.lastSendPayload = payload;
+    }
+
     self.receivedMessage = function (msg, internal=false) {
+
       //Check if toggle is active and toggle between 0 and 1
       if (!internal && self.toggle) {
         if (self.prevtoggle == '0'){
@@ -69,6 +84,14 @@ module.exports = function (RED) {
           msg.payload = '0'
         }
         self.prevtoggle = msg.payload;
+      }
+
+      // Check if it is of a Message type and if so
+      // set it to the msg.payload.enabled value
+      var tm = new Message(self);
+      if (tm.fromMessageObject(msg)){
+        msg.payload = msg.payload.enabled;
+        common.log(self, "Converted payload to msg.payload.enabled value");
       }
 
       // Check if outside hysteresis value only if it is larger than
@@ -115,7 +138,7 @@ module.exports = function (RED) {
       }
 
       //Send the message to emitter then send it further
-      self.configNode.emitConfig(self.uid, msg.payload);
+      self.sendToRules(msg.payload);
 
       //If there is an output send the message
       if (self.output) {
@@ -130,7 +153,7 @@ module.exports = function (RED) {
         }
         self.exptimer = setTimeout(function () {
           common.log(self, "Input value has expired");
-          self.configNode.emitConfig(self.uid, self.expval);
+          self.sendToRules(self.expval);
           if (self.output) {
             self.send({
               payload: self.expval
