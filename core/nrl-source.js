@@ -23,6 +23,8 @@ module.exports = function (RED) {
     this.def = n.def; //Default value
     this.uid = n.uid;
     this.toggle = n.toggle; //Toggle is active
+    this.cycle = n.cycle;   //Cycle is active
+    this.cyclen = n.cyclen;
 
     var self = this;
     common.setStatus(this);
@@ -84,6 +86,18 @@ module.exports = function (RED) {
           msg.payload = '0'
         }
         self.prevtoggle = msg.payload;
+      }
+
+      //Check if cycle is active and cycle through 0 to cyclen
+      if (!internal && self.cycle) {
+        //Increase toggle value
+        self.prevtoggle++;
+
+        //If value is exceeding cyclen reset
+        if (self.prevtoggle > self.cyclen){
+          self.prevtoggle = '0';
+        }
+        msg.payload = self.prevtoggle;
       }
 
       // Check if it is of a Message type and if so

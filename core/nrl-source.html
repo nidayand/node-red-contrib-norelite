@@ -18,7 +18,7 @@
     <div id="expire-details">
         <div class="form-row">
             <label for="node-input-timeout"><i class="fa fa-clock-o"></i> For</label>
-            <input type="text" id="node-input-timeout" placeholder="Time" style="direction:rtl; width:50px !important">
+            <input type="text" id="node-input-timeout" placeholder="Time" style="width:50px !important">
             <select id="node-input-timeoutUnits" style="width:200px !important">
               <option value="milliseconds">Milliseconds</option>
               <option value="seconds">Seconds</option>
@@ -39,6 +39,17 @@
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-cycle" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-cycle" style="width: 70%;">Cycle (0 to n)</label>
+    </div>
+    <div id="cycle-details">
+        <div class="form-row">
+            <label for="node-input-cyclen"><i class="fa fa-clock-o"></i> Cycle to </label>
+            <input type="text" id="node-input-cyclen" placeholder="number" style="width:50px !important">
+        </div>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
         <input type="checkbox" id="node-input-output" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-output" style="width: 70%;">Use output</label>
     </div>
@@ -54,7 +65,15 @@
 
 </script>
 <script type="text/x-red" data-help-name="nrl-source out">
-<p>Stores the received value and will trigger any <b>nrl-eval</b> nodes that have rules that are using this node for evaluation.</p><p><b>Config</b> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules). <b>Rule delay</b> value is used for rules to wait before sending out a message as sometimes multiple sources gets updated close to each other and this variable can avoid unnecessary output messages. Rule delay can be overridden in the nrl-eval node if needed.</p><p><b>Initial value</b> is sent, when the node is deploy, as a start value. If you want to wait for the first incoming message simply clear this field.</p><p><b>Value can expire</b> is used to set an expiration on the incoming value and the value to be sent when it has expired. If Toggle is enabled the reset value will be '0'.</p><p><b>Toggle (0/1)</b> will initially send an '0' upon deploy and for each incoming message it will simply toggle between '0' and '1'. If Value can expire is set the expiration value is '0'.</p><p><b>Use output </b>can be used to send the value of the node further to any other node.</p><p><b>Hysteresis</b> number is used to avoid switching on/off if the values are closed to what has been set in the rules. E.g. 0.1 if you would require a new value to be at least 0.1 from the previous value in order to have the value changed. This is only applicable for numbers and not strings and it should be a positive number (&gt;=0). If set to 0 it is disabled.</p><p><b>Name</b> is important as it will be used in the rule node (nrl-rule).</p>
+<p>Stores the received value and will trigger any <strong>nrl-eval</strong> nodes that have rules that are using this node for evaluation.</p>
+<p><strong>Config</strong> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules). <strong>Rule delay</strong> value is used for rules to wait before sending out a message as sometimes multiple sources gets updated close to each other and this variable can avoid unnecessary output messages. Rule delay can be overridden in the nrl-eval node if needed.</p>
+<p><strong>Initial value</strong> is sent, when the node is deploy, as a start value. If you want to wait for the first incoming message simply clear this field.</p>
+<p><strong>Value can expire</strong> is used to set an expiration on the incoming value and the value to be sent when it has expired. If Toggle is enabled the reset value will be '0'.</p>
+<p><strong>Toggle (0/1)</strong> will initially send an '0' upon deploy and for each incoming message it will simply toggle between '0' and '1'. If <strong>Value can expire</strong> is set the expiration value is '0'.</p>
+<p><strong>Cycle (0 to n)</strong>&nbsp;will initially send an '0' upon deploy. The&nbsp;<strong>Cycle to</strong> value is a numeric value and for every incoming message it will count up and when the next value after&nbsp;<strong>n</strong> is reach it will go back to '0'. A typical use case might be a button that can hold multiple different states - e.g. off/on/auto. If <strong>Value can expire</strong> is set the expiration value is '0'.</p>
+<p><strong>Use output </strong>can be used to send the value of the node further to any other node.</p>
+<p><strong>Hysteresis</strong> number is used to avoid switching on/off if the values are closed to what has been set in the rules. E.g. 0.1 if you would require a new value to be at least 0.1 from the previous value in order to have the value changed. This is only applicable for numbers and not strings and it should be a positive number (&gt;=0). If set to 0 it is disabled.</p>
+<p><strong>Name</strong> is important as it will be used in the rule node (nrl-rule).</p>
 </script>
 <script type="text/javascript">
   function oneditprepareDatasource() {
@@ -65,11 +84,31 @@
         $("#expire-details").hide();
       }
     });
+    $("#node-input-cycle").change(function() {
+      if ($("#node-input-cycle").is(':checked')) {
+        $("#cycle-details").show();
+        $("#expire-value").hide();
+        $("#default-details").hide();
+        $("#hysteresis-details").hide();
+
+        //Disable toggle
+        $("#node-input-toggle").prop('checked', false);
+      } else {
+        $("#cycle-details").hide();
+        $("#default-details").show();
+        $("#expire-value").show();
+        $("#hysteresis-details").show();
+      }
+    });
     $("#node-input-toggle").change(function() {
       if ($("#node-input-toggle").is(':checked')) {
         $("#default-details").hide();
         $("#expire-value").hide();
         $("#hysteresis-details").hide();
+        $("#cycle-details").hide();
+
+        //Disable cycle
+        $("#node-input-cycle").prop('checked', false);
       } else {
         $("#default-details").show();
         $("#expire-value").show();
@@ -127,6 +166,14 @@
         value: false,
         required: true
       },
+      cycle: {
+        value: false,
+        required: true
+      },
+      cyclen: {
+        value: "3",
+        required: false
+      },
       outputs: {
         value: 0
       } //Storing if outputs is enabled. To be able to copy the node.
@@ -148,7 +195,7 @@
       }
       //Set default value =0 when toggle mode is on
       //and hysteresis to 0
-      if ($("#node-input-toggle").is(":checked")) {
+      if ($("#node-input-toggle").is(":checked") || $("#node-input-cycle").is(":checked")) {
         $("#node-input-def").val('0');
         $("#node-input-hysteresis").val('0');
         //If expiration is set, set the expiration value to 0
