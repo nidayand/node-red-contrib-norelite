@@ -32,6 +32,9 @@ module.exports = function (RED) {
         this.checkall = (n.checkall === "true");
         this.values = []; //Keeping all the inbound messages
         this.name = n.name;
+
+        this.srcPrefix = '[src:]';          //Identifies if a value should come from an nrl-source
+
         var self = this;
 
         self.gateopen = false;
@@ -58,8 +61,22 @@ module.exports = function (RED) {
         //Tidy up to ensure correct numbers in values
         for (var i=0; i<this.rules.length; i+=1) {
             var rule = this.rules[i];
-            if (!isNaN(Number(rule.v))) {
+
+            //Copy src references to new variables
+            // rule.vs and rule.v2s (s=source)
+            if (rule.v.indexOf(self.srcPrefix) == 0) {
+                rule.vs = rule.v.substr(self.srcPrefix.length);
+                rule.v = '';
+            }
+            if (rule.v2 && rule.v2.indexOf(self.srcPrefix) == 0) {
+                rule.v2s = rule.v2.substr(self.srcPrefix.length);
+                rule.v2 = '';
+            }
+
+            if (!isNaN(Number(rule.v)) && !rule.vs) {
                 rule.v = Number(rule.v);
+            }
+            if (!isNaN(Number(rule.v2)) && !rule.v2s) {
                 rule.v2 = Number(rule.v2);
             }
         }
@@ -70,15 +87,18 @@ module.exports = function (RED) {
             var numbersTrue = 0; //Counter for number of rules that are true
             _.each(self.rules, function(rule){
                 //Get the value to compare with
+                // rule.v2 is not always available. Only used for between values
                 var val = self.valueGet(rule.s);
-                if (val != undefined){
+                var v = rule.vs ? self.valueGet(rule.vs) : rule.v;
+                var v2 = rule.v2s ? self.valueGet(rule.v2s) : (rule.v2 ? rule.v2 : 0);
+                if (val != undefined && v != undefined && v2 != undefined){
 
                     //Validate the rules
-                    if(operators[rule.t](val,rule.v, rule.v2)){
+                    if(operators[rule.t](val,v, v2)){
                         numbersTrue++;
-                        common.log(self, "Rule ("+self.name+") is TRUE: "+val+" "+rule.t+" "+rule.v);
+                        common.log(self, "Rule ("+self.name+") is TRUE: "+val+" "+rule.t+" "+v+"/"+v2);
                     } else {
-                        common.log(self, "Rule ("+self.name+") is FALSE: "+val+" "+rule.t+" "+rule.v);
+                        common.log(self, "Rule ("+self.name+") is FALSE: "+val+" "+rule.t+" "+v+"/"+v2);
                     }
                 }
             })
@@ -97,6 +117,14 @@ module.exports = function (RED) {
             var list = [];
             for (var i=0; i<self.rules.length; i++){
                 list.push(self.rules[i].s);
+
+                //Add values if sources are being used
+                if (self.rules[i].vs){
+                    list.push(self.rules[i].vs);
+                }
+                if (self.rules[i].v2s){
+                    list.push(self.rules[i].v2s);
+                }
             }
             if (list.length === 0){
                 reject("No rules defined");
