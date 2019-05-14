@@ -27,7 +27,10 @@
     "control",
     "tellstick",
     "zwave",
-    "openzwave"
+    "openzwave",
+    "rules",
+    "persistent",
+    "rule"
   ],
   "node-red": {
     "nodes": {
