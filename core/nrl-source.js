@@ -20,7 +20,7 @@ module.exports = function (RED) {
     this.expval = n.expval; //Expire value
     this.exptimer = null; //Expire timer
     this.hysteresis = n.hysteresis;
-    this.def = n.def; //Default value
+    this.def = n.def;     //Default value
     this.uid = n.uid;
     this.toggle = n.toggle; //Toggle is active
     this.cycle = n.cycle;   //Cycle is active
@@ -35,11 +35,39 @@ module.exports = function (RED) {
     //Used to toggle an value
     self.prevtoggle = '0';
 
+    //Fix expiration value
+    if (typeof self.expval == "string" && self.expval.trim().length>0){
+      var t = self.expval.trim().toLowerCase();
+      if (t === "true"){
+        self.expval = true;
+      } else if (t === "false"){
+        self.expval = false;
+      } else if (!isNaN(t)){
+        self.expval = Number(t);
+      }
+    } else {
+      self.expval = null;
+    }
+
+    //Fix default value
+    if (typeof self.def == "string" && self.def.trim().length>0){
+      var t = self.def.trim().toLowerCase();
+      if (t === "true"){
+        self.def = true;
+      } else if (t === "false"){
+        self.def = false;
+      } else if (!isNaN(t)){
+        self.def = Number(t);
+      }
+    } else {
+      self.def = null;
+    }
+
     //Initialise config
     self.configNode.initialise();
 
     //Send a message if a default message has been set
-    if (self.def.trim().length > 0) {
+    if (self.def !== null) {
       setTimeout(function () {
         self.receivedMessage({
           topic: '',
@@ -108,6 +136,11 @@ module.exports = function (RED) {
         common.log(self, "Converted payload to msg.payload.enabled value");
       }
 
+      //Check if it is a number and if so convert to a proper number
+      if (typeof msg.payload == "string" && !isNaN(msg.payload)){
+        msg.payload = Number(msg.payload);
+      }
+
       // Check if outside hysteresis value only if it is larger than
       if (!isNaN(self.hysteresis) && !isNaN(msg.payload) && self.hysteresis > 0) {
         if (self.prevpayload !== null) {
@@ -130,7 +163,7 @@ module.exports = function (RED) {
             self.prevpayload = msg.payload;
 
             //Set node status
-            common.setStatus(self, 1, msg.payload);
+            common.setStatus(self, msg.payload? 1 : -1, msg.payload);
           }
 
         } else {
@@ -138,11 +171,11 @@ module.exports = function (RED) {
           self.prevpayload = msg.payload;
 
           //Set the status
-          common.setStatus(self, 1, msg.payload);
+          common.setStatus(self, msg.payload? 1 : -1, msg.payload);
         }
       } else {
         //Set the status
-        common.setStatus(self, 1, msg.payload);
+        common.setStatus(self, msg.payload? 1 : -1, msg.payload);
 
         //Reset prev value
         self.prevpayload = null;
@@ -175,7 +208,7 @@ module.exports = function (RED) {
           }
           //Reset the toggle value
           self.prevtoggle = '0';
-          common.setStatus(self, 1, self.expval);
+          common.setStatus(self, self.expval ? 1 : -1, self.expval);
 
           //Reset the previous value parameter
           self.prevpayload = null;

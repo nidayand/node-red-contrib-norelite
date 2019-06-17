@@ -64,19 +64,19 @@ module.exports = function (RED) {
 
             //Copy src references to new variables
             // rule.vs and rule.v2s (s=source)
-            if (rule.v.indexOf(self.srcPrefix) == 0) {
+            if (typeof rule.v !== 'undefined' && rule.v.indexOf(self.srcPrefix) == 0) {
                 rule.vs = rule.v.substr(self.srcPrefix.length);
                 rule.v = '';
             }
-            if (rule.v2 && rule.v2.indexOf(self.srcPrefix) == 0) {
+            if (typeof rule.v2 !== 'undefined' && rule.v2 && rule.v2.indexOf(self.srcPrefix) == 0) {
                 rule.v2s = rule.v2.substr(self.srcPrefix.length);
                 rule.v2 = '';
             }
 
-            if (!isNaN(Number(rule.v)) && !rule.vs) {
+            if (typeof rule.v !== 'undefined' && !isNaN(Number(rule.v)) && !rule.vs) {
                 rule.v = Number(rule.v);
             }
-            if (!isNaN(Number(rule.v2)) && !rule.v2s) {
+            if (typeof rule.v2 !== 'undefined' && !isNaN(Number(rule.v2)) && !rule.v2s) {
                 rule.v2 = Number(rule.v2);
             }
         }
@@ -86,13 +86,22 @@ module.exports = function (RED) {
             //Validate the rules
             var numbersTrue = 0; //Counter for number of rules that are true
             _.each(self.rules, function(rule){
+                var val = self.valueGet(rule.s);
+                //For non value comparison. Strictly boolean
+                if (["true", "false", "null", "nnull"].includes(rule.t)) {
+                    if (operators[rule.t](val)){
+                        numbersTrue++;
+                        common.log(self, "Rule ("+self.name+") is TRUE: "+val+" "+rule.t);
+                    } else {
+                        common.log(self, "Rule ("+self.name+") is FALSE: "+val+" "+rule.t);
+                    }
+                    return;
+                }
                 //Get the value to compare with
                 // rule.v2 is not always available. Only used for between values
-                var val = self.valueGet(rule.s);
                 var v = rule.vs ? self.valueGet(rule.vs) : rule.v;
                 var v2 = rule.v2s ? self.valueGet(rule.v2s) : (rule.v2 ? rule.v2 : 0);
                 if (val != undefined && v != undefined && v2 != undefined){
-
                     //Validate the rules
                     if(operators[rule.t](val,v, v2)){
                         numbersTrue++;
