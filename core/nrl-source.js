@@ -25,6 +25,9 @@ module.exports = function (RED) {
     this.toggle = n.toggle; //Toggle is active
     this.cycle = n.cycle;   //Cycle is active
     this.cyclen = n.cyclen;
+    this.save = n.save;   //Store to flow context current value
+
+    this.saveName = "norelite_source_"+this.uid;
 
     var self = this;
     common.setStatus(this);
@@ -66,14 +69,50 @@ module.exports = function (RED) {
     //Initialise config
     self.configNode.initialise();
 
-    //Send a message if a default message has been set
-    if (self.def !== null) {
+    // If context save and value exists, grab and trigger a message
+    if (self.save){
+      var saveVal = self.context().flow.get(self.saveName);
+      if (typeof saveVal != "undefined"){
+        // Verify changes on toggle in case
+        // user changes node
+        if (self.toggle && (isNaN(saveVal) || saveVal > 1)){
+          // Reset toggle
+          saveVal = 0;
+        }
+        if (self.cycle && (isNaN(saveVal) || saveVal > self.cyclen)){
+          saveVal = 0;
+        }
+
+        // Send message
+        setTimeout(function () {
+          self.receivedMessage({
+            topic: '',
+            payload: saveVal
+          }, true);
+        }, 1000);
+
+        //Save as previous value for cycle function
+        if (isNaN(saveVal)){
+          self.prevpayload = saveVal;
+          self.prevtoggle = saveVal;
+        } else {
+          self.prevtoggle = saveVal;
+        }
+
+      }
+    } else if (self.def !== null) {
+      //Send a message if a default message has been set
       setTimeout(function () {
-        self.receivedMessage({
-          topic: '',
-          payload: self.def
-        }, true);
-      }, 1000);
+          self.receivedMessage({
+            topic: '',
+            payload: self.def
+          }, true);
+        }, 1000);
+      }
+    
+    //Check if a flow variable needs to be deleted
+    if (!self.save && self.context().flow.get(self.saveName)){
+      self.context().flow.set(self.saveName, undefined);
     }
 
     //Calculate timeout in millisecs
@@ -190,6 +229,11 @@ module.exports = function (RED) {
       //If there is an output send the message
       if (self.output) {
         self.send(msg);
+      }
+
+      // Save to flow context store
+      if (self.save){
+        self.context().flow.set(self.saveName, msg.payload);
       }
 
       //Check if there is a timeout value
