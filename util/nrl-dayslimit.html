@@ -20,7 +20,23 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-dayslimit in">
-    <p>Is used to filter the instructions based on the day of the week. If an incoming value has payload.enabled = true the value will be changed to msg.payload.enabled = false if the current day is not selected</p>
+    <p><span>Used to filter the instructions based on the day of the week</span></p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>If current day of week is marked in the settings the message output will have&nbsp;<code>msg.payload.enabled = true</code> (if the incoming message has set to true)&nbsp;otherwise it is set to false.</p>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-dayslimit in', {

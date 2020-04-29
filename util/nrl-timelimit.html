@@ -13,7 +13,24 @@
 
 </script>
 <script type="text/x-red" data-help-name="nrl-timelimit in">
-   <p>Is used to filter the instructions based on the time of the day. If an incoming value has payload.enabled = true the value will be changed to msg.payload.enabled = false if the current time is out of the selected values<br></p>
+    <p><span>Used to filter the instructions based on the time of day</span></p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>If current time of day is within start and end times set in the configuration of the node the message output will have&nbsp;<code>msg.payload.enabled = true</code> (if the incoming message has set to true) &nbsp;otherwise it is set to false.</p>
+    <p>The time setting can span over midnight. E.g. 23:00 to 06:00.</p>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     /* when saving the form */
