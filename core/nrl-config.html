@@ -2,10 +2,6 @@
     configuration node
      ********************************************* -->
 <script type="text/x-red" data-template-name="nrl-config">
-    <div class="form-row" style="width:500px">
-        <p >This configuration should be used <b>globally</b> for nrl-source and nrl-eval nodes. The node is used, not only to set some configurations, but also to communicate between the source and the evaluation nodes. I.e. if a source node is updated it will send the updated value, through this configuration, to the evaluation node and the evaluation will assess the rules.</p>
-        <p >If you have sources and rules on different tabs, make sure also to select <b>on all flows</b> in this configuration</p>
-    </div>
     <div class="form-row">
         <label for="node-config-input-delay"><i class="fa fa-clock-o"></i> Rule send delay</label>
         <input type="text" id="node-config-input-delay" style="width:50px !important"> seconds
@@ -14,6 +10,24 @@
         <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-name" placeholder="Name">
     </div>
+</script>
+<script type="text/x-red" data-help-name="nrl-config">
+    <p>
+        Configuration and communication for for <code>nrl-source</code> and <code>nrl-eval</code> nodes.
+    </p>
+    <h3>Details</h3>
+    <p>
+        It is important that the configuration is set to <code>On all flows</code> or within the flow of context where <code>nrl-source</code> needs to communicate with other norelite nodes if you have other norelite nodes that needs to get the updated values.
+    </p>
+    <p>When an <code>nrl-source</code> is updated the value is sent through the configuration node to the the evaluating node such as <code>nrl-eval</code> node.
+    </p>
+    <p>
+        <code>Rule send delay</code> is used in the evaluating nodes such as <code>nrl-eval</code> node before performing sending out a new message from that node. This is to mitigate many messages received in a short time period.
+    </p>
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul> 
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-config', {
