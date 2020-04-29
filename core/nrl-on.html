@@ -8,7 +8,25 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-on in">
-    <p>Simplest node that will send an On instruction every minute. Can be used if one is not use an evaulation on sources to start a flow.</p>
+    <p>
+        Simplest node that will send an On instruction every minute.
+    </p>
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">object</span>
+        </dt>
+        <dd>Norelite message format. See References
+        </dd>
+    </dl>    
+    <h3>Details</h3>
+    <p>
+        Can be used if one is not use an evaulation on sources to start a norelite flow.
+    </p>
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul> 
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-on in', {
