@@ -23,10 +23,32 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-gate in">
-<p>Is a <strong>gateway</strong> for any type of message and it is passed through if the gate is open to the first output and if the state is closed it will pass the message to the second output.</p>
-<p>The big difference from&nbsp;<strong>nrl-eval</strong> is that this node will not generate any message but pass on the message to either output based on if the rules are true or false.</p>
-<p><strong>Config</strong> is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules).</p>
-<p>To compare the nrl-source value with another nrl-source value instead of a static value, enter a <strong>[space]</strong> character in the input box and it will change to a select box where you can choose the nrl-source value to compare with.</p>
+    <p>Rule based gateway for any type of message and it is passed through if the gate is open to the first output and if the state is closed it will pass the message to the second output.</p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>msg <span class="property-type">object</span></dt>
+    <dd>Any type of message. Not necessarily an Norelite message.</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>msg&nbsp;<span class="property-type">object</span></dt>
+    <dd>Sends out on 1 if the rules are true and on 2 if the rules are false</dd>
+    </dl>
+    <h3>Settings</h3>
+    <dl class="message-properties">
+    <dt>Config</dt>
+    <dd>Global configuration node. Use same node for <code>nrl-source</code> and <code>nrl-eval</code> nodes so that they can communicate</dd>
+    <dt>Rules</dt>
+    <dd>Defines a list of rules to be assessed. If you want to compare with another <code>nrl-source</code> value enter a [space] character in the input box to bring up a list of <code>nrl-source</code> nodes. Click "+" sign to add more rules.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p><code>nrl-gate</code> applies rules to steer the output of the incoming message.</p>
+    <p>The big difference from&nbsp;nrl-eval&nbsp;is that this node will not generate any message but pass on the message to either output based on if the rules are true or false.</p>
+    <p>Evaluations are triggered by a change of state in one of the <code>nrl-source</code> nodes used in the rules and when a message is arrived it will pass on the message to one of the outputs.</p>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-gate in', {
