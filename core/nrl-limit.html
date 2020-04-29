@@ -36,8 +36,29 @@
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="nrl-limit">
-    <p>The <b>nrl-limit node</b> is used to limit the load on the end node and the hardware device (used by the end node) and is based on the core "Delay" node (basic logic is all from that node but only with the functionality of a delay) but with some additional functionality. It will, whenever a new message is received, validate the current buffer of messages and if the instruction differs (e.g. turn off or dim value) from what previously have been received it will remove the first messages in the queue. This is used to avoid any unnecessary on/off actions and should be placed <b>just before the end node</b> that will send the actions to the hardware device</p>
-    <p>Default rate limit of 30 msg/minute.</p>
+    <p>
+        Intelligent limiting of messages sent to hardware nodes
+    </p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+        <dt>instruction
+            <span class="property-type">object</span>
+        </dt>
+        <dd>Msg with Norelite message format in <code>msg.payload</code>. See References
+        </dd>
+    </dl>    
+    <h3>Details</h3>
+    <p>To be placed just before an hardware node to throttle the messages sent ao avoid overloading the hardware node.</p>
+    <p>
+        It is based on the <code>Delay</code> but for norelite messages. <code>msg.payload.instruction</code> keeps the original norelite message (full msg) from the device nodes output and it is used to manage the queue. The device nodes generates this content.
+    </p>
+    <p>
+        When a message is received it is verified if another message is already in the queue but with a different instruction, then the earlier message is dropped. This is to avoid unnecessary on/off messages.
+    </p>
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul> 
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
