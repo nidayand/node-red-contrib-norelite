@@ -34,12 +34,51 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-eval in">
-<p>Evaluates rules based on the sources used and will output a message with the result of rule evaluation that is used by subsequent nodes.</p>
-<p><strong>Config</strong>&nbsp;is used to set some global configuration variables. use the same configuration for all nrl-eval nodes and nrl-sources nodes that should be able to communicate (e.g. source sends new values to nrl-eval nodes for evaluation in the rules).&nbsp;<strong>Rule delay</strong>&nbsp;value is used for rules to wait before sending out a message as sometimes multiple sources get updated close to each other and this variable can avoid unnecessary output messages.</p>
-<p>To compare the nrl-source value with another nrl-source value instead of a static value, enter a <strong>[space]</strong> character in the input box and it will change to a select box where you can choose the nrl-source value to compare with.</p>
-<p>If&nbsp;<strong>Use input</strong>&nbsp;is active then an inbound message will be used to forward with the<strong>&nbsp;enable flag&nbsp;</strong>unchanged if the rule is true or msg.payload.enabled = false if the rule is false. No other parameter will be changed from the inbound message.</p>
-<p>By default, the node will resend the message once a minute. If you want to disable this, check&nbsp;<strong>No repeat messages</strong>&nbsp;to avoid sending repeats of the message.</p>
-<p>Check&nbsp;<strong>No output delay</strong>&nbsp;to override the global delay value as specified in the&nbsp;<strong>Config</strong>.</p>
+    <p>
+        Evaluates rules based on the <code>nrl-source</code> nodes used and will output a message with the result of rule evaluation that is used by subsequent nodes.
+    </p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">object</span>
+        </dt>
+        <dd> Requires <code>Use input</code> enabled. Norelite message format. See References
+        </dd>
+    </dl>    
+    <h3>Settings</h3>
+    <dl class="message-properties">
+        <dt>Config
+        </dt>
+        <dd>Global configuration node. Use same node for <code>nrl-source</code> and <code>nrl-eval</code> nodes so that they can communicate
+        </dd>
+        <dt>Rules
+        </dt>
+        <dd> Defines a list of rules to be assessed. If you want to compare with another <code>nrl-source</code> value enter a <strong>[space]</strong> character in the input box to bring up a list of <code>nrl-source</code> nodes. Click "+" sign to add more rules.
+        </dd>
+        <dt>Use input
+        </dt>
+        <dd>Creates the possibility to receive messages and modify the <code>msg.payload.enabled</code> parameter based on the rules in this node. No other parameter is modified in the incoming message.
+        </dd>
+        <dt>No output delay
+        </dt>
+        <dd>Check to override the delay value set in the <code>Config</code> node
+        </dd>
+        <dt>No repeat messages
+        </dt>
+        <dd>By default, the node sends a repeating message every minute. Check to disable
+        </dd>
+    </dl>    
+    <h3>Details</h3>
+    <p>
+        Evaluations are triggered by a change of state in one of the <code>nrl-source</code> nodes used in the rules OR if <code>Use input</code> is enabled and a message is received.
+    </p>
+    <p>
+        A repeating message will be sent once every minute as the utility nodes in the norelite package doesn't hold state of received messages. This can be disabled in the configuration.
+    </p>
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul> 
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-eval in', {
