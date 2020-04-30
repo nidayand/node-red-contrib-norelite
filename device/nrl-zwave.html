@@ -24,12 +24,44 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-zwave-out">
-    <p>The node will convert the Norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a> input format. Use the node just before the output node from <a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a>.</p>
-    <p>Select the device that is applicable for the flow. All device information is to be configured in node-red-contrib-openzwave and nrl-zwave retrieves the information from the openzwave node configuration.</p><p>Device Name and Information is retrieved from the device configuration as well.</p>
-    <p>Any of the following instructions is sent depending on what is received and if marked as a dimmable device:<br/>
-    {topic: 'switchOn', payload: {"nodeid":2}} ==> to switch on basic switch on ZWave node #2<br/>
-{topic: 'switchOff', payload: {"nodeid":2}} ==> to switch off basic switch on ZWave node #2<br/>
-{topic: 'setLevel', payload: {"nodeid": 5, "value": 50}} ==> set level on dimmer on ZWave node #5 to 50%</p>
+    <p>The node will convert the Norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a> input format</p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>device specific instructions</dt>
+    <dd>Message content specific for the receiving hardware node</dd>
+    <dt>instruction <span class="property-type">object</span></dt>
+    <dd>Msg with Norelite message format in <code>msg.payload</code> from incoming payload. See References</dd>
+    </dl>
+    <h3>Settings</h3>
+    <dl class="message-properties">
+    <dt>Device</dt>
+    <dd>Select device or group to be controlled</dd>
+    <dt>Dimmable</dt>
+    <dd>Mark if the hardware device is dimmable</dd>
+    <dt>Device Name</dt>
+    <dd>Retrieved from&nbsp;<a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a>&nbsp;node</dd>
+    <dt>Device Location</dt>
+    <dd>Retrieved from&nbsp;<a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a>&nbsp;node</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Use the node just before the output node from <a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a>.</p>
+    <p>All device information is to be configured in&nbsp;<a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave&nbsp;</a>and <code>nrl-zwave</code> retrieves the information from the openzwave node configuration. Hence the&nbsp;<a href="https://www.npmjs.com/package/node-red-contrib-openzwave">node-red-contrib-openzwave</a>&nbsp;node must be deployed prior to configuration of <code>nrl-zwave</code>.</p>
+    <p>Device Name and Information is retrieved from the device configuration as well.Any of the following instructions is sent depending on what is received and if marked as a dimmable device:</p>
+    <ul>
+    <li>{topic: 'switchOn', payload: {"nodeid":2}} ==&gt; to switch on basic switch on ZWave node #2</li>
+    <li>{topic: 'switchOff', payload: {"nodeid":2}} ==&gt; to switch off basic switch on ZWave node #2</li>
+    <li>{topic: 'setLevel', payload: {"nodeid": 5, "value": 50}} ==&gt; set level on dimmer on ZWave node #5 to 50%</li>
+    </ul>
+    <div></div>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     var devices = null;

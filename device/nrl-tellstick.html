@@ -16,8 +16,36 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-tellstick-out">
-    <p>The node will convert the Norelite payload into a format that is applicable for the <a href="https://github.com/emiloberg/node-red-contrib-tellstick">node-red-contrib-tellstick</a> input format. Use the node just before the output node from <a href="https://github.com/emiloberg/node-red-contrib-tellstick">node-red-contrib-tellstick</a>.</p>
-    <p>Select the device that is applicable for the flow. When selecting a device the name is changed to the name of the device but can be modified. All device information is to be configured in node-red-contrib-tellstick (e.g. if it is dimmable or not).</p>
+    <p>Convert the Norelite payload into a format that is applicable for the <a href="https://github.com/emiloberg/node-red-contrib-tellstick">node-red-contrib-tellstick</a> input format</p>
+<h3>Input</h3>
+<dl class="message-properties">
+<dt>payload&nbsp;<span class="property-type">object</span></dt>
+<dd>Norelite message format. See References</dd>
+</dl>
+<h3>Output</h3>
+<dl class="message-properties">
+<dt>device specific instructions</dt>
+<dd>Message content specific for the receiving hardware node</dd>
+<dt>instruction <span class="property-type">object</span></dt>
+<dd>Msg with Norelite message format in <code>msg.payload</code> from incoming payload. See References</dd>
+</dl>
+<h3>Settings</h3>
+<dl class="message-properties">
+<dt>Device</dt>
+<dd>Select device or group to be controlled</dd>
+<dt>Dimmable</dt>
+<dd>Mark if the hardware device is dimmable</dd>
+</dl>
+<h3>Details</h3>
+<p>Use the node just before the output node from <a href="https://github.com/emiloberg/node-red-contrib-tellstick">node-red-contrib-tellstick</a>.</p>
+<p><a href="https://github.com/emiloberg/node-red-contrib-tellstick">node-red-contrib-tellstick</a>&nbsp;must have been deployed as a node prior to configuration so that one can get the devices to control in the configuration in this node.</p>
+<p>When selecting a device the name is changed to the name of the device but can be modified.</p>
+<p>All device information is to be configured in&nbsp;<a href="https://github.com/emiloberg/node-red-contrib-tellstick">node-red-contrib-tellstick</a> (e.g. if it is dimmable or not).</p>
+<div></div>
+<h3>References</h3>
+<ul>
+<li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+</ul>
 </script>
 <script type="text/javascript">
     var devices = null;
