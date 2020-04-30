@@ -10,9 +10,32 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-tradfri-out">
-    <p>The node will convert the norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-node-tradfri">node-red-contrib-tradfri</a> input format.</p>
-    <p>The device or group that is to be controlled is to be defined in the receiving node-red-contrib-tradfri node</p>
-    <p>Mark if the hardware device is <b>dimmable</b> or not. Note: If it is not marked dimmable and msg.payload.dim > 0 it will still turn on</p>
+    <p>Convert the Norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-node-tradfri">node-red-contrib-tradfri</a> input format</p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>device specific instructions</dt>
+    <dd>Message content specific for the receiving hardware node</dd>
+    <dt>instruction <span class="property-type">object</span></dt>
+    <dd>Msg with Norelite message format in <code>msg.payload</code> from incoming payload. See References</dd>
+    </dl>
+    <h3>Settings</h3>
+    <dl class="message-properties">
+    <dt>Dimmable</dt>
+    <dd><span>Mark if the hardware device is&nbsp;</span>dimmable<span>&nbsp;or not. Note: If it is not marked dimmable and msg.payload.dim &gt; 0 it will still turn on</span></dd>
+    </dl>
+    <h3>Details</h3>
+    <div>
+    <div><span>The device or group that is to be controlled is to be defined in the receiving<a href="https://www.npmjs.com/package/node-red-contrib-node-tradfri">node-red-contrib-tradfri</a> node.</span></div>
+    </div>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-tradfri-out', {
