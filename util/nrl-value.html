@@ -12,7 +12,23 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-value in">
-    <p>Used to modify the <b>value</b> of the switch. I.e. if a switch should be dimmed. 0-100 are valid values</p>
+    <p>Helper node to modify the dim value 0-100%</p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Updates the <code>msg.payload.dim</code> value with configuration. 0 - 100 are valid numbers.</p>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     /* when opening the form */
