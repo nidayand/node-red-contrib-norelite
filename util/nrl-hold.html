@@ -32,7 +32,56 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-hold in">
-    <p>Hols an instruction for a certain amount of time</p><p><b>Hold On</b>&nbsp;defines if an enabled message should be hold. I.e. msg.payload.enabled = true.</p><p><b>Hold Off</b>&nbsp;defines is an disabled message should be hold. I.e. msg.payload.enabled = false.</p><p><b>Hold from</b>&nbsp;defines from where the timer starts:</p><ul><li>when a new state is received - E.g. it is set to "Hold On" and a new message where msg.payload.enabled = false, the timer starts when that message is received</li><li>minimum when it changed state - E.g. it is set to "Hold On" and currest state is disabled (msg.payload.enabled = false) and when the enabled message is received the timer is started. If a subsequent message where the state is disabled after the hold time has expired it will change immidiately</li></ul><p><b>For</b>&nbsp;is to set the timout value.</p>
+    <p><span>Holds an instruction for a certain amount of time</span></p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format</dd>
+    </dl>
+    <h3>Settings</h3>
+    <dl class="message-properties">
+    <dt>Hold On</dt>
+    <dd>Defines if an enabled message should be hold. I.e. <code>msg.payload.enabled = true</code></dd>
+    <dt>Hold Off</dt>
+    <dd>Defines if an disabled message should be hold. I.e. <code>msg.payload.enabled = false</code></dd>
+    <dt>Hold From</dt>
+    <dd>Defines when the timer should start</dd>
+    <dt>For</dt>
+    <dd>Set timing preferences</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Timer details:</p>
+    <ul>
+    <li><code>minimum when it changed state</code> - Timer starts when the to hold value is received. E.g.<br />
+    <ol>
+    <li>Hold node is set to Hold On state for 5 mins. Current state of the node is <code>msg.payload.enabled=false</code></li>
+    <li>01:00 Node receives a new message <code>msg.payload.enabled=true</code> and timer starts</li>
+    <li>02:00 Node receives a message with <code>msg.payload.enabled=false</code></li>
+    <li>05:00 Node sends out message with&nbsp;<code>msg.payload.enabled=false</code></li>
+    </ol>
+    <strong>If (3) didn't happen</strong> and a <code>msg.payload.enabled=false</code> is received after 5 mins the state will change immediately</li>
+    <li><code><span>when a new state is received</span></code><span><span> - Timer starts when the not to hold value is received.</span></span>
+    <ul>
+    <li>E.g.<br />
+    <ol>
+    <li>Hold node is set to Hold Off state for 5 mins. Current state of the node is <code>msg.payload.enabled=true</code></li>
+    <li>01:00 Node receives a new message <code>msg.payload.enabled=false</code>&nbsp;</li>
+    <li>02:00 Node receives a message with <code>msg.payload.enabled=true</code> and timer starts</li>
+    <li>07:00 Node sends out message with&nbsp;<code>msg.payload.enabled=false</code></li>
+    </ol>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     /* when opening the form */
