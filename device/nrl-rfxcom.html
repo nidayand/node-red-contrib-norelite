@@ -16,9 +16,32 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-rfxcom-out">
-    <p>The node will convert the Norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-rfxcom">node-red-contrib-rfxcom</a> input format. Use the node just before the rfx-lights sensor from <a href="https://www.npmjs.com/package/node-red-contrib-rfxcom">node-red-contrib-rfxcom</a>.</p>
-    <p>Enter the switch code in <b>code</b> field and a name for the display</p>
-    <p>Mark if the hardware device is <b>dimmable</b> or not. Note: If it is not marked dimmable and msg.payload.dim > 0 it will still turn on</p>
+    <p>Convert the Norelite payload into a format that is applicable for the <a href="https://www.npmjs.com/package/node-red-contrib-rfxcom">node-red-contrib-rfxcom</a> input format</p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>device specific instructions</dt>
+    <dd>Message content specific for the receiving hardware node</dd>
+    <dt>instruction <span class="property-type">object</span></dt>
+    <dd>Msg with Norelite message format in <code>msg.payload</code> from incoming payload. See References</dd>
+    </dl>
+    <h3>Settings</h3>
+    <dl class="message-properties">
+    <dt>Code</dt>
+    <dd>Switch code used for the specific hardware device</dd>
+    <dt>Dimmable</dt>
+    <dd><span>Mark if the hardware device is&nbsp;</span>dimmable<span>&nbsp;or not. Note: If it is not marked dimmable and msg.payload.dim &gt; 0 it will still turn on</span></dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Use the node just before the rfx-lights sensor from <a href="https://www.npmjs.com/package/node-red-contrib-rfxcom">node-red-contrib-rfxcom</a>.
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-rfxcom-out', {
