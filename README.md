@@ -8,6 +8,7 @@ npm install node-red-contrib-norelite
 ```
 **Additional nodes** that can be used with **node-red-contrib-norelite** but due to licensing restrictions is not part of this repo can be found here:
 - [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) : To change the color instruction in a message. Uses [jscolor lib](http://jscolor.com/) that is under [GNU GPL license v3](http://www.gnu.org/licenses/gpl-3.0.txt)
+- [node-red-contrib-norelite-homeassistant](https://www.npmjs.com/package/node-red-contrib-norelite-homeassistant) : Helper nodes to be used with **node-red-contrib-norelite**  and [node-red-contrib-norelite-home-assistant-websocket](https://www.npmjs.com/package/node-red-contrib-home-assistant-websocket). Translates instructions that are compliant for calls to Home Assistant
 
 ## What is it?
 Simplified, **node-red-contrib-norelite** is a set of Node-RED nodes that are designed to managed your simple and complex rules that controls your IoT enabled devices. It includes plenty of nodes to manage incoming values, create rules based on the values, utilities to change the instructions and and some device nodes to convert the instructions into a message that can be understood by the transmitting node that finally will transmit the instruction to your IoT device such as a lamp or power switch.
