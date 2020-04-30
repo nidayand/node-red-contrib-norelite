@@ -8,7 +8,23 @@
     </div>
 </script>
 <script type="text/x-red" data-help-name="nrl-route in">
-    <p>Routes payload.enabled = true messages to the first output and payload.enabled = false to the second output</p>
+    <p><span>Routes message to different outputs based on <code>msg.payload.enabled</code> state</span></p>
+    <h3>Input</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format. See References</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+    <dt>payload&nbsp;<span class="property-type">object</span></dt>
+    <dd>Norelite message format</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>A simple node that routes <code>msg.payload.enabled=true</code> to the first output and <code>msg.payload.enabled=false</code> to the second output</p>
+    <h3>References</h3>
+    <ul>
+    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
+    </ul>
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-route in', {
