@@ -6,7 +6,7 @@ The package is the successor to the npm package [**norelite**](https://www.npmjs
 cd ~/.node-red
 npm install node-red-contrib-norelite
 ```
-**Additional nodes** that can be used with **node-red-contrib-norelite** but due to licensing restrictions is not part of this repo can be found here:
+**Additional nodes** that can be used with **node-red-contrib-norelite** can be found here:
 - [node-red-contrib-norelite-color](https://www.npmjs.com/package/node-red-contrib-norelite-color) : To change the color instruction in a message. Uses [jscolor lib](http://jscolor.com/) that is under [GNU GPL license v3](http://www.gnu.org/licenses/gpl-3.0.txt)
 - [node-red-contrib-norelite-homeassistant](https://www.npmjs.com/package/node-red-contrib-norelite-homeassistant) : Helper nodes to be used with **node-red-contrib-norelite**  and [node-red-contrib-norelite-home-assistant-websocket](https://www.npmjs.com/package/node-red-contrib-home-assistant-websocket). Translates instructions that are compliant for calls to Home Assistant
 
