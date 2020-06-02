@@ -78,8 +78,13 @@
     <dt>payload
         <span class="property-type">object|string|number|boolean</span>
     </dt>
-    <dd>Value to be stored or used in the <code>nrl-source</code> logic based on node settings
+    <dd>Value to be stored or used in the <code>nrl-source</code> logic based on node settings. If incoming message is in norelite messaging format <code>msg.payload.enabled</code> will be used. See References section for more details on format.
     </dd>
+    <dt>reset
+      <span class="property-type">boolean</span>
+  </dt>
+  <dd>Optional. Will reset toggle or counter to 0 or if an initial value has been set
+  </dd>
 </dl>
 <h3>Output</h3>
 <dl class="message-properties">
@@ -115,7 +120,7 @@
     </dt>
     <dd>Sends the value of the node further to any other node upon change.
     </dd>
-    <dt>Save value in flow
+    <dt>Save value in flow context
     </dt>
     <dd>Store the last value as a flow variable meaning if you have persistance context store setup (saving values to disk), the saved value will be used upon redeploy/restart. If set and a value has been received <code>Initial value</code> is overridden by this value.
     </dd>

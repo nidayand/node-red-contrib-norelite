@@ -140,7 +140,7 @@ module.exports = function (RED) {
       self.lastSendPayload = payload;
     }
 
-    self.receivedMessage = function (msg, internal=false) {
+    self.receivedMessage = function (msg, internal=false, reset=false) {
 
       //Check if toggle is active and toggle between 0 and 1
       if (!internal && self.toggle) {
@@ -163,11 +163,20 @@ module.exports = function (RED) {
         }
         msg.payload = self.prevtoggle;
       }
+      // RESET
+      if (reset){
+        if (self.toggle || self.cycle){
+          msg.payload = '0';
+          self.prevtoggle = '0';
+        } else {
+          msg.payload = self.def;
+        }
+      }
 
       // Check if it is of a Message type and if so
       // set it to the msg.payload.enabled value
       var tm = new Message(self);
-      if (tm.fromMessageObject(msg)){
+      if (!reset && tm.fromMessageObject(msg)){
         msg.payload = msg.payload.enabled;
         common.log(self, "Converted payload to msg.payload.enabled value");
       }
@@ -234,11 +243,11 @@ module.exports = function (RED) {
       }
 
       //Check if there is a timeout value
-      if (self.expire) {
-        //Clear old
-        if (self.exptimer) {
-          clearTimeout(self.exptimer);
-        }
+      //Clear old
+      if (self.exptimer) {
+        clearTimeout(self.exptimer);
+      }
+      if (!reset && self.expire) {
         self.exptimer = setTimeout(function () {
           common.log(self, "Input value has expired");
           self.sendToRules(self.expval);
@@ -258,7 +267,12 @@ module.exports = function (RED) {
     }
 
     self.on("input", function (msg) {
-      self.receivedMessage(msg);
+      if (typeof msg.reset != "undefined" && msg.reset){
+        self.receivedMessage(msg, true, true);
+
+      } else {
+        self.receivedMessage(msg);
+      }
     });
 
     self.on("close", function () {
