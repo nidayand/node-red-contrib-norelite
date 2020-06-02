@@ -140,14 +140,14 @@
 </script>
 <script type="text/javascript">
   function oneditprepareDatasource() {
-    $("#node-input-expire").change(function() {
+    var expChange = function() {
       if ($("#node-input-expire").is(':checked')) {
         $("#expire-details").show();
       } else {
         $("#expire-details").hide();
       }
-    });
-    $("#node-input-cycle").change(function() {
+    }
+    var cycleChange = function() {
       if ($("#node-input-cycle").is(':checked')) {
         $("#cycle-details").show();
         $("#expire-value").hide();
@@ -162,8 +162,8 @@
         $("#expire-value").show();
         $("#hysteresis-details").show();
       }
-    });
-    $("#node-input-toggle").change(function() {
+    }
+    var toggleChange = function() {
       if ($("#node-input-toggle").is(':checked')) {
         $("#default-details").hide();
         $("#expire-value").hide();
@@ -177,7 +177,15 @@
         $("#expire-value").show();
         $("#hysteresis-details").show();
       }
-    });
+    }
+    $("#node-input-expire").change(expChange);
+    $("#node-input-cycle").change(cycleChange);
+    $("#node-input-toggle").change(toggleChange);
+
+    //Call all to set init values with delay
+    if ($("#node-input-expire").is(':checked')) setTimeout(expChange,100);
+    if ($("#node-input-cycle").is(':checked')) setTimeout(cycleChange,100);
+    if ($("#node-input-toggle").is(':checked')) setTimeout(toggleChange,100);
   }
   RED.nodes.registerType('nrl-source out', {
     category: 'norelite-output',

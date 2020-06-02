@@ -70,35 +70,32 @@ module.exports = function (RED) {
     self.configNode.initialise();
 
     // If context save and value exists, grab and trigger a message
-    if (self.save){
-      var saveVal = self.context().flow.get(self.saveName);
-      if (typeof saveVal != "undefined"){
-        // Verify changes on toggle in case
-        // user changes node
-        if (self.toggle && (isNaN(saveVal) || saveVal > 1)){
-          // Reset toggle
-          saveVal = 0;
-        }
-        if (self.cycle && (isNaN(saveVal) || saveVal > self.cyclen)){
-          saveVal = 0;
-        }
+    var saveVal = self.context().flow.get(self.saveName);
+    if (self.save && typeof saveVal != "undefined"){
+      // Verify changes on toggle in case
+      // user changes node
+      if (self.toggle && (isNaN(saveVal) || saveVal > 1)){
+        // Reset toggle
+        saveVal = 0;
+      }
+      if (self.cycle && (isNaN(saveVal) || saveVal > self.cyclen)){
+        saveVal = 0;
+      }
 
-        // Send message
-        setTimeout(function () {
-          self.receivedMessage({
-            topic: '',
-            payload: saveVal
-          }, true);
-        }, 1000);
+      // Send message
+      setTimeout(function () {
+        self.receivedMessage({
+          topic: '',
+          payload: saveVal
+        }, true);
+      }, 1000);
 
-        //Save as previous value for cycle function
-        if (isNaN(saveVal)){
-          self.prevpayload = saveVal;
-          self.prevtoggle = saveVal;
-        } else {
-          self.prevtoggle = saveVal;
-        }
-
+      //Save as previous value for cycle function
+      if (isNaN(saveVal)){
+        self.prevpayload = saveVal;
+        self.prevtoggle = saveVal;
+      } else {
+        self.prevtoggle = saveVal;
       }
     } else if (self.def !== null) {
       //Send a message if a default message has been set
