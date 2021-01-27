@@ -1,4 +1,4 @@
-# node-red-contrib-norelite [![npm version](https://badge.fury.io/js/node-red-contrib-norelite.svg)](https://badge.fury.io/js/node-red-contrib-norelite)
+# [node-red-contrib-norelite](https://github.com/nidayand/node-red-contrib-norelite) [![npm version](https://badge.fury.io/js/node-red-contrib-norelite.svg)](https://badge.fury.io/js/node-red-contrib-norelite)
 
 Try to implement this scenario through automation rules in Home Assistant:
 
@@ -43,6 +43,16 @@ In short I'd say it is the following main characteristics:
     - RFXcom
     - OpenZwave
     - Home Assistant (switch and lights) ([node-red-contrib-norelite-home-assistant-websocket](https://www.npmjs.com/package/node-red-contrib-home-assistant-websocket))
+
+## Simplicity through visualization ##
+Node-RED is simple and great at flow managment and home automation rules can be quite complex to define.
+By example I've illustrated the scenario presented at _Home Assistant Conference 2020_ here a light bulb is to be controlled by sun state, time and if a door is opened or closed.
+
+Check out the video explaining on how to do it in Home Assistant on [Youtube](https://youtu.be/OIkZWF5uGxk?t=422)
+
+I built the same logic easily using **node-red-contrib-norelite** and it can easily be extended further. It is a good showcase on the simplicity of norelite.
+![Illustrative example](homeassistantconference2020.png "Illustrative Example")
+
 
 ## Alright, how do I get started? ##
 
