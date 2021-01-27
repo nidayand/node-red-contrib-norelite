@@ -46,7 +46,7 @@ In short I'd say it is the following main characteristics:
 
 ## Simplicity through visualization ##
 Node-RED is simple and great at flow managment and home automation rules can be quite complex to define.
-By example I've illustrated the scenario presented at _Home Assistant Conference 2020_ here a light bulb is to be controlled by sun state, time and if a door is opened or closed.
+By example I've illustrated the scenario presented at _Home Assistant Conference 2020_ where a light bulb is to be controlled by sun state, time and if a door is opened or closed.
 
 Check out the video explaining on how to do it in Home Assistant on [Youtube](https://youtu.be/OIkZWF5uGxk?t=422)
 
