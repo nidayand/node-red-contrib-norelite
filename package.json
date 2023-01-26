@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-norelite",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "A set of Node-Red nodes to ease the implementation of your home automation requirements",
   "author": {
     "name": "nidayand",
