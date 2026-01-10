@@ -11,24 +11,21 @@
         <input type="text" id="node-config-input-name" placeholder="Name">
     </div>
 </script>
-<script type="text/x-red" data-help-name="nrl-config">
-    <p>
-        Configuration and communication for for <code>nrl-source</code> and <code>nrl-eval</code> nodes.
-    </p>
-    <h3>Settings</h3>
-    <p>
-        <code>Rule send delay</code> is used in the evaluating nodes such as <code>nrl-eval</code> node before performing sending out a new message from that node. This is to mitigate many messages received in a short time period.
-    </p>
-    <h3>Details</h3>
-    <p>
-        It is important that the configuration is set to <code>On all flows</code> or within the flow of context where <code>nrl-source</code> needs to communicate with other norelite nodes if you have other norelite nodes that needs to get the updated values.
-    </p>
-    <p>When an <code>nrl-source</code> is updated the value is sent through the configuration node to the the evaluating node such as <code>nrl-eval</code> node.
-    </p>
-    <h3>References</h3>
-    <ul>
-        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    </ul> 
+<script type="text/markdown" data-help-name="nrl-config">
+Configuration and communication for the `nrl-source` and `nrl-eval` nodes.
+
+## When to use
+Use this configuration node to share timing and communication between Norelite nodes such as `nrl-source` and `nrl-eval`. Place the config node in the same flow context as the nodes that use it, or set it to *On all flows* so updates are visible across flows.
+
+## Settings
+- **Rule send delay** — number of seconds that evaluating nodes (for example `nrl-eval`) wait before sending a resolved command. This reduces duplicate or rapid-fire commands when many inputs arrive in a short time.
+
+## Details
+When an `nrl-source` is updated, the value is sent through this configuration node to subscribing Norelite nodes (for example `nrl-eval`). The config node centralises the send-delay setting and acts as the shared communication channel between source and evaluator nodes.
+
+## References
+- https://www.npmjs.com/package/node-red-contrib-norelite
+
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-config', {
