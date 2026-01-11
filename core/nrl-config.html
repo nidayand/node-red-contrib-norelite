@@ -14,17 +14,17 @@
 <script type="text/markdown" data-help-name="nrl-config">
 Configuration and communication for the `nrl-source` and `nrl-eval` nodes.
 
-## When to use
+### When to use
 Use this configuration node to share timing and communication between Norelite nodes such as `nrl-source` and `nrl-eval`. Place the config node in the same flow context as the nodes that use it, or set it to *On all flows* so updates are visible across flows.
 
-## Settings
-- **Rule send delay** — number of seconds that evaluating nodes (for example `nrl-eval`) wait before sending a resolved command. This reduces duplicate or rapid-fire commands when many inputs arrive in a short time.
+### Settings
+: delay (number) : Rule send delay in seconds. Evaluating nodes (for example `nrl-eval`) wait this long before sending a resolved command to reduce duplicate or rapid-fire commands.
 
-## Details
-When an `nrl-source` is updated, the value is sent through this configuration node to subscribing Norelite nodes (for example `nrl-eval`). The config node centralises the send-delay setting and acts as the shared communication channel between source and evaluator nodes.
+### Details
+: (none) : When an `nrl-source` is updated, the value is sent through this configuration node to subscribing Norelite nodes (for example `nrl-eval`). The config node centralises the send-delay setting and acts as the shared communication channel between source and evaluator nodes.
 
-## References
-- https://www.npmjs.com/package/node-red-contrib-norelite
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
 
 </script>
 <script type="text/javascript">

@@ -35,44 +35,31 @@
 </script>
 
 <!-- Next, some simple help text is provided for the node.                   -->
-<script type="text/x-red" data-help-name="nrl-limit">
-    <p>
-        Intelligent limiting of messages sent to hardware nodes
-    </p>
-    <h3>Input</h3>
-    <dl class="message-properties">
-        <dt>device specific instructions
-        </dt>
-        <dd>Message content specific for the receiving hardware node</dd>
-        <dt>instruction
-            <span class="property-type">object</span>
-        </dt>
-        <dd>Msg with Norelite message format in <code>msg.payload</code>. See References
-        </dd>
-    </dl>
-    <h3>Output</h3>
-    <dl class="message-properties">
-        <dt>device specific instructions
-        </dt>
-        <dd>Message content specific for the receiving hardware node</dd>
-        <dt>instruction
-            <span class="property-type">object</span>
-        </dt>
-        <dd>Norelite message format. See References
-        </dd>
-    </dl>    
-    <h3>Details</h3>
-    <p>To be placed just before an hardware node to throttle the messages sent ao avoid overloading the hardware node.</p>
-    <p>
-        It is based on the <code>Delay</code> but for norelite messages. <code>msg.payload.instruction</code> keeps the original norelite message (full msg) from the device nodes output and it is used to manage the queue. The device nodes generates this content.
-    </p>
-    <p>
-        When a message is received it is verified if another message is already in the queue but with a different instruction, then the earlier message is dropped. This is to avoid unnecessary on/off messages.
-    </p>
-    <h3>References</h3>
-    <ul>
-        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    </ul> 
+<script type="text/markdown" data-help-name="nrl-limit">
+Throttles messages sent to hardware nodes to avoid overloading devices or sending unnecessary repeated commands.
+
+### When to use
+: (none) : Place this node before a hardware/output node to limit how many messages are forwarded to the device within a time window.
+
+### Inputs
+: msg.payload (object) : Device-specific instruction message. The node expects Norelite-formatted messages (for example `msg.payload.instruction` containing the device instruction object).
+
+### Outputs
+: msg.payload (object) : Device-specific instruction message forwarded according to the configured rate.
+
+### Settings
+: rate (number) : Number of messages allowed per selected time unit (second, minute, hour, day).
+: name (string) : Free-form label for the node.
+
+### Behaviour
+: (none) : The node queues incoming instructions and forwards at most the configured number of messages per time unit. If a new instruction arrives that differs from a queued instruction, the earlier one may be dropped to avoid redundant commands.
+
+### Examples
+: (none) : Throttle a burst of sensor-triggered commands so the device only receives one command per minute.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->

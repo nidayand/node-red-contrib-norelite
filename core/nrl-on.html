@@ -7,26 +7,21 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
-<script type="text/x-red" data-help-name="nrl-on in">
-    <p>
-        Simplest node that will send an On instruction every minute.
-    </p>
-    <h3>Output</h3>
-    <dl class="message-properties">
-        <dt>payload
-            <span class="property-type">object</span>
-        </dt>
-        <dd>Norelite message format. See References
-        </dd>
-    </dl>    
-    <h3>Details</h3>
-    <p>
-        Can be used if one is not use an evaulation on sources to start a norelite flow.
-    </p>
-    <h3>References</h3>
-    <ul>
-        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    </ul> 
+<script type="text/markdown" data-help-name="nrl-on in">
+Sends a periodic "On" instruction in Norelite message format.
+
+### When to use
+: (none) : Use this node as a simple periodic trigger that emits an "On" command for testing or to drive downstream flows.
+
+### Outputs
+: msg.payload (object) : Norelite message format representing the periodic "On" instruction.
+
+### Details
+: (none) : This minimal node emits a Norelite-style message representing an "On" instruction at its configured interval. It can be used to start flows or provide a steady-state message for testing.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-on in', {

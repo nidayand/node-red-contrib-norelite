@@ -64,35 +64,30 @@
         <input type="text" id="node-input-dcolor">
     </div>
 </script>
-<script type="text/x-red" data-help-name="nrl-set in">
-  <p>Change values in the Norelite formatted <code>msg.payload</code> object</p>
-  <h3>Input</h3>
-  <dl class="message-properties">
-  <dt>payload&nbsp;<span class="property-type">object</span></dt>
-  <dd>Norelite message format. See References</dd>
-  </dl>
-  <h3>Output</h3>
-  <dl class="message-properties">
-  <dt>payload&nbsp;<span class="property-type">object</span></dt>
-  <dd>Norelite message format</dd>
-  </dl>
-  <h3>Settings</h3>
-  <dl class="message-properties">
-  <dt>Enabled</dt>
-  <dd>Can be set to remain as the incoming <code>msg.payload.enabled</code> or override with true or false</dd>
-  <dt>Type</dt>
-  <dd><span>Used for prioritizing messages in the <code>nrl-switch</code> node. Normal setting is '0' and if you want to override other messages in the <code>nrl-switch</code> node with the message from a subflow simply increase this value</span></dd>
-  <dt>Dim</dt>
-  <dd><span>Used to override the dim value. Valid options are 0-100. If the value is empty, the inbound value will remain</span></dd>
-  <dt>Color</dt>
-  <dd><span>Used used to override the color value and it should be an hex value including '#'. E.g. #FFFFFF for white. If the value is empty, the inbound value will remain</span></dd>
-  </dl>
-  <h3>Details</h3>
-  <p><span>For inbound enabled or disabled messages <code>msg.payload.enable</code> it is possible to override the variables used in this node</span></p>
-  <h3>References</h3>
-  <ul>
-  <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-  </ul>
+<script type="text/markdown" data-help-name="nrl-set in">
+Change or override fields in a Norelite-formatted `msg.payload` object.
+
+### When to use
+: (none) : Use `nrl-set` to adjust specific fields of a Norelite payload (for example `enabled`, `type`, `dim`, or `color`) before forwarding to a downstream node such as `nrl-switch` or a device node.
+
+### Inputs
+: msg.payload (object) : Norelite message format.
+
+### Outputs
+: msg.payload (object) : Norelite message format with the selected fields modified according to the node settings.
+
+### Settings
+: enabled / denabled (string) : Configure whether to override `msg.payload.enabled` (values: leave unchanged / force true / force false).
+: istype / distype (number) : Type to use for priority decisions (default 0).
+: dim / ddim (number) : Dim level (0–100). Leave empty to keep incoming value.
+: color / dcolor (string) : Color hex (e.g. `#FFFFFF`). Leave empty to keep incoming value.
+
+### Behaviour
+: (none) : When a message arrives the node updates only the fields configured; unspecified fields are left unchanged. Useful to escalate priority or set fixed brightness/color before arbitration in `nrl-switch`.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+
 </script>
 <script type="text/javascript">
   RED.nodes.registerType('nrl-set in', {

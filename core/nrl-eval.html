@@ -33,61 +33,35 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
-<script type="text/x-red" data-help-name="nrl-eval in">
-    <p>
-        Evaluates rules based on the <code>nrl-source</code> nodes used and will output a message with the result of rule evaluation that is used by subsequent nodes.
-    </p>
-    <h3>Input</h3>
-    <dl class="message-properties">
-        <dt>payload
-            <span class="property-type">object</span>
-        </dt>
-        <dd> Requires <code>Use input</code> enabled. Norelite message format. See References
-        </dd>
-    </dl>
-    <h3>Output</h3>
-    <dl class="message-properties">
-        <dt>payload
-            <span class="property-type">object</span>
-        </dt>
-        <dd>Norelite message format. See References
-        </dd>
-    </dl>    
-    <h3>Settings</h3>
-    <dl class="message-properties">
-        <dt>Config
-        </dt>
-        <dd>Global configuration node. Use same node for <code>nrl-source</code> and <code>nrl-eval</code> nodes so that they can communicate
-        </dd>
-        <dt>Rules
-        </dt>
-        <dd> Defines a list of rules to be assessed. If you want to compare with another <code>nrl-source</code> value enter a <strong>[space]</strong> character in the input box to bring up a list of <code>nrl-source</code> nodes. Click "+" sign to add more rules.
-        </dd>
-        <dt>Use input
-        </dt>
-        <dd>Creates the possibility to receive messages and modify the <code>msg.payload.enabled</code> parameter based on the rules in this node. No other parameter is modified in the incoming message.
-        </dd>
-        <dt>No output delay
-        </dt>
-        <dd>Check to override the delay value set in the <code>Config</code> node
-        </dd>
-        <dt>No repeat messages
-        </dt>
-        <dd>By default, the node sends a repeating message every minute. Check to disable
-        </dd>
-    </dl>    
-    <h3>Details</h3>
-    <p>
-        Evaluations are triggered by a change of state in one of the <code>nrl-source</code> nodes used in the rules OR if <code>Use input</code> is enabled and a message is received.
-    </p>
-    <p>
-        A repeating message will be sent once every minute as the utility nodes in the norelite package doesn't hold state of received messages. This can be disabled in the configuration.
-    </p>
-    <h3>References</h3>
-    <ul>
-        <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-        <li>See example at Import -> Examples -> node-red-contrib-norelite -> source_eval_gate</li>
-    </ul> 
+<script type="text/markdown" data-help-name="nrl-eval in">
+Evaluates rules based on one or more `nrl-source` nodes and produces a resolved Norelite message.
+
+### When to use
+: (none) : Use this node to evaluate conditions (rules) against values exposed by `nrl-source` nodes and produce a single decision message (for gating, combining sensors, or boolean logic).
+
+### Inputs
+: msg.payload (object) : Norelite message format. Requires **Use input** to be enabled. When enabled the node may modify `msg.payload.enabled` according to the rules; other incoming payload fields are not modified.
+
+### Outputs
+: msg.payload (object) : Norelite message format representing the evaluated result.
+
+### Settings
+: config (nrl-config) : Global configuration node. Use the same config node for related `nrl-source` and `nrl-eval` nodes.
+: rules (array) : List of rules to evaluate. To compare against another `nrl-source` value, type a single space in the value box to select a `nrl-source`.
+: inputson (boolean) : When checked the node accepts incoming messages and updates `msg.payload.enabled` per the rules.
+: outputdelay (boolean) : When checked bypasses the delay configured in the `nrl-config` node.
+: disablerepeat (boolean) : When checked disables periodic re-sends of the last result.
+
+### Behaviour
+: (none) : Evaluations are triggered when a linked `nrl-source` changes state or when **Use input** is enabled and a message is received. Unchanged results are not re-sent except for periodic repeats (if enabled).
+
+### Examples
+: (none) : Gate input — combine two `nrl-source` nodes so a downstream action runs only when both match. Override delay — enable **No output delay** for immediate evaluation.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+: (example) : Import -> Examples -> node-red-contrib-norelite -> source_eval_gate
+
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-eval in', {

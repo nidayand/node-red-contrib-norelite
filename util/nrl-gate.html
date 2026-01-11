@@ -22,34 +22,36 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
-<script type="text/x-red" data-help-name="nrl-gate in">
-    <p>Rule based gateway for any type of message and it is passed through if the gate is open to the first output and if the state is closed it will pass the message to the second output.</p>
-    <h3>Input</h3>
-    <dl class="message-properties">
-    <dt>msg <span class="property-type">object</span></dt>
-    <dd>Any type of message. Not necessarily an Norelite message.</dd>
-    </dl>
-    <h3>Output</h3>
-    <dl class="message-properties">
-    <dt>msg&nbsp;<span class="property-type">object</span></dt>
-    <dd>Sends out on 1 if the rules are true and on 2 if the rules are false</dd>
-    </dl>
-    <h3>Settings</h3>
-    <dl class="message-properties">
-    <dt>Config</dt>
-    <dd>Global configuration node. Use same node for <code>nrl-source</code> and <code>nrl-eval</code> nodes so that they can communicate</dd>
-    <dt>Rules</dt>
-    <dd>Defines a list of rules to be assessed. If you want to compare with another <code>nrl-source</code> value enter a [space] character in the input box to bring up a list of <code>nrl-source</code> nodes. Click "+" sign to add more rules.</dd>
-    </dl>
-    <h3>Details</h3>
-    <p><code>nrl-gate</code> applies rules to steer the output of the incoming message.</p>
-    <p>The big difference from&nbsp;nrl-eval&nbsp;is that this node will not generate any message but pass on the message to either output based on if the rules are true or false.</p>
-    <p>Evaluations are triggered by a change of state in one of the <code>nrl-source</code> nodes used in the rules and when a message is arrived it will pass on the message to one of the outputs.</p>
-    <h3>References</h3>
-    <ul>
-    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    <li>See example at Import -> Examples -> node-red-contrib-norelite -> source_eval_gate</li>
-    </ul>
+<script type="text/markdown" data-help-name="nrl-gate in">
+Steers an incoming message to one of two outputs based on rule evaluation.
+
+### When to use
+: (none) : Use `nrl-gate` to route messages conditionally: output 1 for rules=true, output 2 for rules=false.
+
+### Inputs
+: msg (object) : Any message object. The node accepts arbitrary messages (not only Norelite messages) and evaluates the configured rules against `nrl-source` values.
+
+### Outputs
+1. Gate true
+: msg (object) : The incoming message forwarded when rules evaluate to true.
+
+2. Gate false
+: msg (object) : The incoming message forwarded when rules evaluate to false.
+
+### Settings
+: config (nrl-config) : Select the `nrl-config` node used by `nrl-source`/`nrl-eval`.
+: rules (array) : List of rules to evaluate. Type a single space in a value field to select a `nrl-source`.
+
+### Behaviour
+: (none) : The node evaluates rules whenever a linked `nrl-source` changes or when a message arrives and forwards the incoming message to the appropriate output.
+
+### Examples
+: (none) : Gate and forward sensor messages only when a set of conditions are met; otherwise forward to a fallback flow.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+: (example) : Import -> Examples -> node-red-contrib-norelite -> source_eval_gate
+
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-gate in', {

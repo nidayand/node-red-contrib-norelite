@@ -51,64 +51,35 @@
     </div>
 
 </script>
-<script type="text/x-red" data-help-name="nrl-switch out">
-    <p>
-        A magic node that takes several inputs and based on the enabled, type and other values of those will defined the outbound message.
-      </p>
-      <h3>Input</h3>
-      <dl class="message-properties">
-          <dt>payload
-              <span class="property-type">object</span>
-          </dt>
-          <dd>Norelite message format. See References
-          </dd>
-      </dl>
-      <h3>Output</h3>
-      <dl class="message-properties">
-          <dt>payload
-              <span class="property-type">object</span>
-          </dt>
-          <dd>Norelite message format. See References
-          </dd>
-      </dl>    
-      <h3>Settings</h3>
-      <dl class="message-properties">
-          <dt>Send code
-          </dt>
-          <dd>Configuration can be used to send bursts of the same message a number of times.
-          </dd>
-          <dt>Repeat every
-          </dt>
-          <dd>Resend the output message in preset intervals.
-          </dd>
-          <dt>Disable repeat
-          </dt>
-          <dd>Disables the repeat function and will only output once every time a calculation differs.
-          </dd>
-      </dl>    
-      <h3>Details</h3>
-      <p>
-          Node can take several connections as input and it stores the received value in memory. 
-          It re-assesses the output every time a new message is received an builds a new output message based on the summary of received messages.
-          So this is a filtering node that, based on some comparison rules, calculates a new message that is only sent if the result of the calculation differs.
-      </p>
-      <p>
-          Is useful when more than one flow should steer the same lights or switches.
-      </p>
-      <p>
-        Comparison rules:
-        <ol>
-            <li>Heigher <code>msg.payload.type</code> has precedence. E.g. a message from one node with <code>msg.payload.type = 3</code> will be used is a message from another node with <code>msg.payload.type = 0</code>
-            </li>
-            <li><code>msg.payload.enabled = true</code> has precedence over <code>msg.payload.enabled = false</code> if the same <code>msg.payload.type</code></li>
-            <li>Higher <code>msg.payload.dim</code> has precedence and will also set the color value <code>msg.payload.color</code></li>
-        </ol>
-      </p>
-      <h3>References</h3>
-      <ul>
-          <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-          <li>See example at Import -> Examples -> node-red-contrib-norelite -> switch</li>
-      </ul> 
+<script type="text/markdown" data-help-name="nrl-switch out">
+Collects Norelite messages from multiple sources, stores them, and resolves a single outbound Norelite message according to precedence rules. This node is the central arbiter when multiple automations/rules conflict: it decides which rule wins and emits the final command for a device (for example, whether a light should be turned on or off).
+
+### When to use
+: (none) : Use when several flows or rules may control the same device and you need a single resolved command that respects priority and intended precedence.
+
+### Inputs
+: msg.payload (object) : Norelite message object representing a proposed device command.
+
+### Outputs
+: msg.payload (object) : Norelite message object representing the resolved command chosen by the node.
+
+### Properties (editor settings)
+: times (config) : Send code — how many times the resolved output is emitted (`nrl-switch-config`).
+: repeat / repeatUnits (number/string) : Repeat every — interval used to schedule a single-shot repeat of the resolved output.
+: once (boolean) : Disable repeat — when true the node only sends on changes.
+: name (string) : Node label.
+
+### Behaviour
+: (none) : Stores incoming Norelite messages, debounces rapid updates (~1s), then resolves a single outbound message using precedence rules:
+1. Higher `msg.payload.priority` wins.
+2. If equal, `enabled: true` wins over `enabled: false`.
+3. If still equal, higher `msg.payload.dim` wins (and determines `msg.payload.color`).
+
+: Emission : When the resolved output differs from the last sent output the node sends it `times` times immediately and (unless `once` is set) schedules a single-shot repeat after the configured interval. Unchanged results are not re-sent except for scheduled repeats.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-switch out', {

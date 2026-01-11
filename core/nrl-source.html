@@ -56,7 +56,7 @@
     <div class="form-row">
       <label>&nbsp;</label>
       <input type="checkbox" id="node-input-save" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
-      <label for="node-input-save" style="width: 70%;">Save value in flow context</label>
+      <label for="node-input-save" style="width: 70%;">Persistant value (flow)</label>
     </div>
   <div class="form-row" id="hysteresis-details">
         <label for="node-input-hysteresis"><i class="fa fa-bookmark"></i> Hysteresis</label>
@@ -69,79 +69,38 @@
     </div>
 
 </script>
-<script type="text/x-red" data-help-name="nrl-source out">
-<p>
-  Stores the received value and will trigger any evaluation nodes that are subscribing to the value.
-</p>
-<h3>Input</h3>
-<dl class="message-properties">
-    <dt>payload
-        <span class="property-type">object|string|number|boolean</span>
-    </dt>
-    <dd>Value to be stored or used in the <code>nrl-source</code> logic based on node settings. If incoming message is in norelite messaging format <code>msg.payload.enabled</code> will be used. See References section for more details on format.
-    </dd>
-    <dt>reset
-      <span class="property-type">boolean</span>
-  </dt>
-  <dd>Optional. Will reset toggle or counter to 0 or if an initial value has been set
-  </dd>
-</dl>
-<h3>Output</h3>
-<dl class="message-properties">
-    <dt>payload
-        <span class="property-type">object|string|number|boolean</span>
-    </dt>
-    <dd>If <code>Use output</code> is enabled it will send out the current value
-    </dd>
-</dl>    
-<h3>Settings</h3>
-<dl class="message-properties">
-    <dt>Config
-    </dt>
-    <dd>Global configuration node. Use same node for <code>nrl-source</code> and <code>nrl-eval</code> nodes so that they can communicate
-    </dd>
-    <dt>Initial value
-    </dt>
-    <dd>When the node is deployed this is set as the start value
-    </dd>
-    <dt>Value can expire
-    </dt>
-    <dd>Set an expiration on the incoming value and the value to be sent when it has expired. If <code>Toggle</code> is enabled the reset value will be <code>0</code>.
-    </dd>
-    <dt>Toggle
-    </dt>
-    <dd>Will toggle the value of the node between <code>0-1</code> independently of the incoming payload. Will send <code>0</code> when initially deployed.
-    </dd>
-    <dt>Cycle (0 to n)
-    </dt>
-    <dd>Will cycle the value of the node from <code>0-n</code> independently of the incoming payload. When <code>n</code> is reached it will go back to <code>0</code>. Will send <code>0</code> when initially deployed.
-    </dd>
-    <dt>Use output
-    </dt>
-    <dd>Sends the value of the node further to any other node upon change.
-    </dd>
-    <dt>Save value in flow context
-    </dt>
-    <dd>Store the last value as a flow variable meaning if you have persistance context store setup (saving values to disk), the saved value will be used upon redeploy/restart. If set and a value has been received <code>Initial value</code> is overridden by this value.
-    </dd>
-    <dt>Hysteresis
-    </dt>
-    <dd>Number is used to avoid switching on/off if the values are closed to what has been set in the rules. E.g. 0.1 if you would require a new value to be at least 0.1 from the previous value in order to have the value changed. This is only applicable for numbers and not strings and it should be a positive number (>=0). If set to 0 it is disabled.
-    </dd>
-    <dt>Name
-    </dt>
-    <dd>Important to be unique as it is used in the evaluation nodes. Not as an identifier but for user to know which <code>nrl-source</code> is referred to.
-    </dd>
-</dl>    
-<h3>Details</h3>
-<p>
-    When a message is received a trigger and value is sent to all evaluation nodes that are subscribing to this specific node.
-</p>
-<h3>References</h3>
-<ul>
-    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    <li>See example at Import -> Examples -> node-red-contrib-norelite -> source_eval_gate</li>
-</ul> 
+<script type="text/markdown" data-help-name="nrl-source out">
+Exposes and stores a single named value for evaluation nodes. Optionally forwards the value, persists it to flow context, applies hysteresis, provides toggle/cycle behaviour, and can expire to a fallback value.
+
+### When to use
+: (none) : Use when you need a single source-of-truth value for rules/evaluations, a simple toggle or counter, or to persist/restore a value across deploys/restarts.
+
+### Inputs
+: msg.payload (object|string|number|boolean) : Incoming value. If the payload is a Norelite message object the node uses `msg.payload.enabled`. Numeric strings are converted to numbers.
+: msg.reset (boolean) : Optional. When `true` resets toggle/cycle to `0`, or sets payload to the configured Initial value.
+
+### Outputs
+: msg.payload (object|string|number|boolean) : Emitted when **Use output** is enabled and the node accepts a change.
+
+### Properties (editor settings)
+: config (nrl-config) : Shared config node used to emit updates to `nrl-eval` nodes.
+: def (any) : Initial value emitted on deploy if no saved value exists.
+: save (boolean) : Persistent value (flow) — store last value in flow context and restore on deploy.
+: toggle (boolean) : Toggle mode — flip between 0 and 1 on each input.
+: cycle (boolean) : Cycle mode — increment 0..cyclen on each input.
+: output (boolean) : Use output — forward accepted value to downstream nodes.
+: expire / expval (boolean/any) : Value can expire and fall back to `expval` after timeout.
+: hysteresis (number) : Numeric threshold — changes smaller than this are ignored.
+
+### Behaviour
+: (none) : On deploy the node restores a saved flow value (if `save` enabled) or emits the configured Initial value after ~1s. On input, toggle/cycle modes override the incoming payload; Norelite-format messages use `msg.payload.enabled`. Hysteresis applies only to numeric comparisons. Accepted values are emitted to evaluation nodes (deduplicated), optionally forwarded, saved to flow context, and may start an expiration timer that emits `expval` when it fires. On close timers and local state are cleared.
+
+### Examples
+: (none) : Toggle button — wire an Inject node to this node with **Toggle** enabled to flip between `0` and `1`. Persistent sensor — enable **Use output** and **Persistant value (flow)** to restore the last value after restart.
+
+### Notes
+: (none) : Emissions to evaluation nodes are deduplicated. Hysteresis only applies to numeric comparisons. Persistence requires a configured context store to survive Node-RED restarts.
+
 </script>
 <script type="text/javascript">
   function oneditprepareDatasource() {

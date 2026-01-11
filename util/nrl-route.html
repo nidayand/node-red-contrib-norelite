@@ -7,24 +7,28 @@
         <input type="text" id="node-input-name">
     </div>
 </script>
-<script type="text/x-red" data-help-name="nrl-route in">
-    <p><span>Routes message to different outputs based on <code>msg.payload.enabled</code> state</span></p>
-    <h3>Input</h3>
-    <dl class="message-properties">
-    <dt>payload&nbsp;<span class="property-type">object</span></dt>
-    <dd>Norelite message format. See References</dd>
-    </dl>
-    <h3>Output</h3>
-    <dl class="message-properties">
-    <dt>payload&nbsp;<span class="property-type">object</span></dt>
-    <dd>Norelite message format</dd>
-    </dl>
-    <h3>Details</h3>
-    <p>A simple node that routes <code>msg.payload.enabled=true</code> to the first output and <code>msg.payload.enabled=false</code> to the second output</p>
-    <h3>References</h3>
-    <ul>
-    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    </ul>
+<script type="text/markdown" data-help-name="nrl-route in">
+Routes messages to two outputs based on `msg.payload.enabled`.
+
+### When to use
+: (none) : Branch a flow depending on whether the incoming Norelite message indicates enabled (true) or disabled (false).
+
+### Inputs
+: msg.payload (object) : Norelite message format.
+
+### Outputs
+1. Enabled
+: msg.payload (object) : The incoming message forwarded when `msg.payload.enabled === true`.
+
+2. Disabled
+: msg.payload (object) : The incoming message forwarded when `msg.payload.enabled === false`.
+
+### Details
+: (none) : Utility node that inspects `msg.payload.enabled` and forwards the incoming message to the correct output.
+
+### References
+: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('nrl-route in', {
