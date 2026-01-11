@@ -70,14 +70,14 @@ module.exports = function (RED) {
       out_msg.reset(true); //Reset to negative values
 
       _.each(self.allIds, function (cid) {
-        if (cid.getType() > out_msg.getType()) {
+        if (cid.getPriority() > out_msg.getPriority()) {
 
-          //If the type is higher copy all content to output msg
+          //If the priority is higher copy all content to output msg
           out_msg.copy(cid);
           self.activeId = cid.getId();
 
-        } else if (cid.getType() == out_msg.getType()) {
-          //Same type
+        } else if (cid.getPriority() == out_msg.getPriority()) {
+          //Same priority level, check further
 
           if (cid.is_enabled() && !out_msg.is_enabled()){
             //Enabled has higher preference than disabled
@@ -131,7 +131,7 @@ module.exports = function (RED) {
         self.prevMsg = msg;
       }
 
-      common.setStatus(self, msg.is_enabled() ? 1 : -1, msg.getType() +'/'+msg.getDim() + '%');
+      common.setStatus(self, msg.is_enabled() ? 1 : -1, msg.getPriority() +'/'+msg.getDim() + '%');
     }
 
 
