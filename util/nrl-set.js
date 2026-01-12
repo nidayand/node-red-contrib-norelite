@@ -37,7 +37,7 @@ module.exports = function (RED) {
           Number(self.enabled) == 1 ? nmsg.enable() : nmsg.disable();
 
         if (Number(self.istype) > -1)
-          nmsg.setType(Number(self.istype));
+          nmsg.setPriority(Number(self.istype));
 
         if (self.dim.length > 0)
           nmsg.setDim(self.dim);
@@ -50,7 +50,7 @@ module.exports = function (RED) {
           Number(self.denabled) == 1 ? nmsg.enable() : nmsg.disable();
 
         if (Number(self.distype) > -1)
-          nmsg.setType(Number(self.distype));
+          nmsg.setPriority(Number(self.distype));
 
         if (self.ddim.length > 0)
           nmsg.setDim(self.ddim);
@@ -60,7 +60,7 @@ module.exports = function (RED) {
 
       }
 
-      common.setStatus(self, nmsg.is_enabled() ? 1 : -1, nmsg.getType() +'/'+nmsg.getDim() + '%');
+      common.setStatus(self, nmsg.is_enabled() ? 1 : -1, nmsg.getPriority() +'/'+nmsg.getDim() + '%');
 
       self.send(nmsg.toMessageObject());
     });

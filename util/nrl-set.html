@@ -14,7 +14,7 @@
         </select>
     </div>
     <div class="form-row">
-        <label><i class="fa fa-bookmark"></i> Type</label>
+        <label><i class="fa fa-bookmark"></i> Priority</label>
         <select id="node-input-istype">
           <option value="-1">* Don't change *</option>
           <option value="0">Normal (0)</option>
@@ -44,7 +44,7 @@
         </select>
     </div>
     <div class="form-row">
-        <label><i class="fa fa-bookmark"></i> Type</label>
+        <label><i class="fa fa-bookmark"></i> Priority</label>
         <select id="node-input-distype">
           <option value="-1">* Don't change *</option>
           <option value="0">Normal (0)</option>
@@ -77,16 +77,28 @@ Use `nrl-set` to adjust specific fields of a Norelite payload (for example `enab
 : msg.payload (object) : Norelite message format with the selected fields modified according to the node settings.
 
 ### Settings
-: enabled / disabled (string) : Configure whether to override `msg.payload.enabled` (values: leave unchanged / force true / force false).
+: enabled (string) : Configure whether to override `msg.payload.enabled`.
 : priority (number) : Change the priority of the message (default 0).
 : dim (number) : Dim level (0–100). Leave empty to keep incoming value.
 : color (string) : Color hex (e.g. `#FFFFFF`). Leave empty to keep incoming value.
 
 ### Behaviour
  When a message arrives the node updates only the fields configured; unspecified fields are left unchanged. Useful to escalate priority or set fixed brightness/color before arbitration in `nrl-switch`.
-
-### References
-: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+### Example Norelite message
+: id (string) : Unique message ID that is generated from source/sending node. Used to track and store incoming messages.
+: enabled (boolean) : true = On, false = Off
+: dim (number) : Dim level (0-100)
+: color (string) : Color in hex format
+: priority (number) : Priority level (higher number = higher priority)
+```json
+{
+    "id": "556e7ed8b3db354e",
+    "enabled": true,
+    "dim": 80,
+    "color": "#FFFFFF", 
+    "priority": 5
+}
+```
 
 </script>
 <script type="text/javascript">
