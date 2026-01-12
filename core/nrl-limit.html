@@ -39,7 +39,8 @@
 Throttles messages sent to hardware nodes to avoid overloading devices or sending unnecessary repeated commands.
 
 ### When to use
-: (none) : Place this node before a hardware/output node to limit how many messages are forwarded to the device within a time window.
+The node helps to limit how many messages are sent within a specified time window. It is similar to the node-red limit node but also understands Norelite message format and can drop redundant messages.
+If you have hardware node that you need to limit the number of incoming instructions, place this node before the hardware/output node to limit how many messages are forwarded to the device within a time window.
 
 ### Inputs
 : msg.payload (object) : Device-specific instruction message. The node expects Norelite-formatted messages (for example `msg.payload.instruction` containing the device instruction object).
@@ -52,13 +53,10 @@ Throttles messages sent to hardware nodes to avoid overloading devices or sendin
 : name (string) : Free-form label for the node.
 
 ### Behaviour
-: (none) : The node queues incoming instructions and forwards at most the configured number of messages per time unit. If a new instruction arrives that differs from a queued instruction, the earlier one may be dropped to avoid redundant commands.
+The node queues incoming instructions and forwards at most the configured number of messages per time unit. If a new instruction arrives that differs from a queued instruction, the earlier one may be dropped to avoid redundant commands.
 
 ### Examples
-: (none) : Throttle a burst of sensor-triggered commands so the device only receives one command per minute.
-
-### References
-: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
+Throttle a burst of sensor-triggered commands so the device only receives one command per minute.
 
 </script>
 
