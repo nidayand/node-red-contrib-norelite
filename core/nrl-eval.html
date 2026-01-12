@@ -37,23 +37,42 @@
 Evaluates rules based on one or more `nrl-source` nodes and produces a resolved Norelite message.
 
 ### When to use
-: (none) : Use this node to evaluate conditions (rules) against values exposed by `nrl-source` nodes and produce a single decision message (for gating, combining sensors, or boolean logic).
+Use this node to evaluate conditions (rules) against values exposed by nrl-source nodes and produce a single decision message (for gating, combining sensors, or boolean logic). In order to use this node, you must have at least one nrl-source node in the same flow.
 
 ### Inputs
-: msg.payload (object) : Norelite message format. Requires **Use input** to be enabled. When enabled the node may modify `msg.payload.enabled` according to the rules; other incoming payload fields are not modified.
+: msg.payload (object) : Norelite message format. Requires **Use input** to be enabled. When enabled the node may modify msg.payload.enabled according to the rules; other incoming payload fields are not modified.
 
 ### Outputs
 : msg.payload (object) : Norelite message format representing the evaluated result.
 
 ### Settings
-: config (nrl-config) : Global configuration node. Use the same config node for related `nrl-source` and `nrl-eval` nodes.
-: rules (array) : List of rules to evaluate. To compare against another `nrl-source` value, type a single space in the value box to select a `nrl-source`.
-: inputson (boolean) : When checked the node accepts incoming messages and updates `msg.payload.enabled` per the rules.
-: outputdelay (boolean) : When checked bypasses the delay configured in the `nrl-config` node.
-: disablerepeat (boolean) : When checked disables periodic re-sends of the last result.
+: config (nrl-config) : Global configuration node. Use the same config node for related nrl-source and nrl-eval nodes. It is used to emit changes from nrl-source nodes to linked nrl-eval nodes so they can re-evaluate their rules.
+: rules (array) : List of rules to evaluate. To compare against another nrl-source value, type a single space in the value box to select a nrl-source.
+: Use Input (boolean) : When checked the node accepts incoming messages and updates msg.payload.enabled per the rules.
+: No Output Delay (boolean) : When checked bypasses the delay configured in the config node.
+: No Repeat Messages (boolean) : When checked disables periodic re-sends of the last result.
+: Name (string) : Node label.
 
 ### Behaviour
-: (none) : Evaluations are triggered when a linked `nrl-source` changes state or when **Use input** is enabled and a message is received. Unchanged results are not re-sent except for periodic repeats (if enabled).
+Evaluations are triggered when a linked nrl-source changes state or when **Use input** is enabled and a message is received. Unchanged results are not re-sent except for periodic repeats (if enabled).
+
+When **Use input** is enabled the node stores the incoming message (including fields such as `msg.payload.enabled`, `priority`, `dim`, and `color`) and uses that stored state when evaluating rules. If the stored state is changed (for example the node updates `msg.payload.enabled` to `false` because a rule matched) the updated result may alter the resolved output and will be emitted immediately — it does not require a separate incoming message from an `nrl-source` for the updated status to be sent.
+
+### Example Norelite message
+: id (string) : Unique message ID that is generated from source/sending node. Used to track and store incoming messages.
+: enabled (boolean) : true = On, false = Off
+: dim (number) : Dim level (0-100)
+: color (string) : Color in hex format
+: priority (number) : Priority level (higher number = higher priority)
+```json
+{
+    "id": "556e7ed8b3db354e",
+    "enabled": true,
+    "dim": 80,
+    "color": "#FFFFFF", 
+    "priority": 5
+}
+```
 
 ### Examples
 : (none) : Gate input — combine two `nrl-source` nodes so a downstream action runs only when both match. Override delay — enable **No output delay** for immediate evaluation.
@@ -106,6 +125,20 @@ Evaluates rules based on one or more `nrl-source` nodes and produces a resolved 
                 if (cf.type==="nrl-source out"){
                     sourceAllList.push(cf);
                 }
+            });
+            
+            //sort the list by sourceAllList[index].name
+            sourceAllList.sort(function(a, b) {
+                var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                // names must be equal
+                return 0;
             });
 
             //if there are no sources, prompt to add first
