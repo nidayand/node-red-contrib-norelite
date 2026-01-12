@@ -10,16 +10,8 @@ module.exports = function (RED) {
   /*******************************************
   Switch node and config
   *******************************************/
-  function NoreliteSwitchConfig(n) {
-    RED.nodes.createNode(this, n);
-    this.name = n.name;
-    this.times = n.times;
-  }
-  RED.nodes.registerType("nrl-switch-config", NoreliteSwitchConfig);
-
   function NoreliteSwitch(n) {
     RED.nodes.createNode(this, n);
-    this.times = RED.nodes.getNode(n.times).times;
     this.name = n.name;
     this.timer = null;
     this.once = n.once;
@@ -58,6 +50,7 @@ module.exports = function (RED) {
     }
     self.activeId; //Keeps the active id of receiving message
     self.prevMsg; //Keeps store of the last sent out msg
+    self.firstReceive = true; //Flag for first receive
 
 
     /* Method to create output message */
@@ -102,6 +95,9 @@ module.exports = function (RED) {
       //self.activeId is set in the method
       var msg = self.getOutputMsg();
 
+      //Send also to 2nd output the list of all incoming ids
+      self.send([null, { payload: self.allIds }]);
+
       if (typeof self.prevMsg == 'undefined' ||
         /* Variables have changed */
         !self.prevMsg.compareTo(msg) ||
@@ -115,10 +111,8 @@ module.exports = function (RED) {
         }
 
 
-        //Send the message the set number of times
-        for (var i = 0; i < self.times; i++) {
-          self.send(msg.toMessageObject());
-        }
+        //Send the message to 1st output
+        self.send([msg.toMessageObject(), null]);
 
         //Set timer for repeat function if it has not been disabled
         if (!self.once){
@@ -148,9 +142,15 @@ module.exports = function (RED) {
         clearTimeout(self.receiveTimeout);
         self.receiveTimeout = null;
       }
-      self.receiveTimeout = setTimeout(function () {
+
+      if(self.firstReceive){
+        self.firstReceive = false;
+        self.receiveTimeout = setTimeout(function () {
+          self.sendMsg();
+        }, 1000);
+      } else {
         self.sendMsg();
-      }, 1000);
+      }
 
     });
 

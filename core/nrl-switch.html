@@ -1,34 +1,7 @@
 <!-- *********************************************
     switch node
      ********************************************* -->
-<script type="text/x-red" data-template-name="nrl-switch-config">
-    <div class="form-row">
-        <label for="node-config-input-times"><i class="fa fa-clock-o"></i> Repeat send</label>
-        <input type="text" id="node-config-input-times" style="width:50px !important">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-config-input-name" placeholder="Name">
-    </div>
-</script>
-<script type="text/javascript">
-    RED.nodes.registerType('nrl-switch-config', {
-        category: 'config',
-        color: "rgb(218, 196, 180)",
-        defaults: {
-            times: {value: 3, required: true, validate: RED.validators.number()},
-            name: {value: ""}
-        },
-        label: function () {
-            return this.name || (this.times + " times");
-        }
-    });
-</script>
 <script type="text/x-red" data-template-name="nrl-switch out">
-    <div class="form-row">
-        <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Send code</label>
-        <input type="text" id="node-input-times" placeholder="Number">
-    </div>
     <div id="repeat-details" class="form-row">
         <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Repeat every</label>
         <input type="text" id="node-input-repeat" placeholder="Time" style="direction:rtl; width:50px !important">
@@ -55,27 +28,46 @@
 Collects Norelite messages from multiple sources, stores them, and resolves a single outbound Norelite message according to precedence rules. This node is the central arbiter when multiple automations/rules conflict: it decides which rule wins and emits the final command for a device (for example, whether a light should be turned on or off).
 
 ### When to use
-: (none) : Use when several flows or rules may control the same device and you need a single resolved command that respects priority and intended precedence.
+Use when several flows or rules may control the same device and you need a single resolved command that respects priority and intended precedence.
 
 ### Inputs
 : msg.payload (object) : Norelite message object representing a proposed device command.
 
 ### Outputs
+1. Standard output
 : msg.payload (object) : Norelite message object representing the resolved command chosen by the node.
 
+2. Debug output
+: msg.payload (object) : List of all incoming message IDs currently stored by the node. This is purely for debugging and visibility into what messages are being considered.
+
 ### Properties (editor settings)
-: times (config) : Send code — how many times the resolved output is emitted (`nrl-switch-config`).
 : repeat / repeatUnits (number/string) : Repeat every — interval used to schedule a single-shot repeat of the resolved output.
 : once (boolean) : Disable repeat — when true the node only sends on changes.
 : name (string) : Node label.
 
 ### Behaviour
-: (none) : Stores incoming Norelite messages, debounces rapid updates (~1s), then resolves a single outbound message using precedence rules:
+Stores incoming Norelite messages then resolves a single outbound message using precedence rules:
 1. Higher `msg.payload.priority` wins.
 2. If equal, `enabled: true` wins over `enabled: false`.
 3. If still equal, higher `msg.payload.dim` wins (and determines `msg.payload.color`).
 
-: Emission : When the resolved output differs from the last sent output the node sends it `times` times immediately and (unless `once` is set) schedules a single-shot repeat after the configured interval. Unchanged results are not re-sent except for scheduled repeats.
+Note: Unchanged results are not re-sent except for scheduled repeats.
+
+### Example Norelite message
+: id (string) : Unique message ID that is generated from source/sending node. Used to track and store incoming messages.
+: enabled (boolean) : true = On, false = Off
+: dim (number) : Dim level (0-100)
+: color (string) : Color in hex format
+: priority (number) : Priority level (higher number = higher priority)
+```json
+{
+    "id": "556e7ed8b3db354e",
+    "enabled": true,
+    "dim": 80,
+    "color": "#FFFFFF", 
+    "priority": 5
+}
+```
 
 ### References
 : (link) : https://www.npmjs.com/package/node-red-contrib-norelite
@@ -87,13 +79,12 @@ Collects Norelite messages from multiple sources, stores them, and resolves a si
         color: "#E2D96E",
         defaults: {
             name: {value: "", required: false},
-            times: {type: "nrl-switch-config", required: true},
             repeat: {value: 10, required: true, validate: RED.validators.number()},
             repeatUnits: {value: "minutes", required: false},
-            once: {value: false, required: false}
+            once: {value: true, required: false}
         },
         inputs: 1,
-        outputs: 1,
+        outputs: 2,
         icon: "fa-power-off.png",
         align: "right",
         label: function() {
