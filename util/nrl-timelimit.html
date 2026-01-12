@@ -12,25 +12,36 @@
     </div>
 
 </script>
-<script type="text/x-red" data-help-name="nrl-timelimit in">
-    <p><span>Used to filter the instructions based on the time of day</span></p>
-    <h3>Input</h3>
-    <dl class="message-properties">
-    <dt>payload&nbsp;<span class="property-type">object</span></dt>
-    <dd>Norelite message format. See References</dd>
-    </dl>
-    <h3>Output</h3>
-    <dl class="message-properties">
-    <dt>payload&nbsp;<span class="property-type">object</span></dt>
-    <dd>Norelite message format</dd>
-    </dl>
-    <h3>Details</h3>
-    <p>If current time of day is within start and end times set in the configuration of the node the message output will have&nbsp;<code>msg.payload.enabled = true</code> (if the incoming message has set to true) &nbsp;otherwise it is set to false.</p>
-    <p>The time setting can span over midnight. E.g. 23:00 to 06:00.</p>
-    <h3>References</h3>
-    <ul>
-    <li><a href="https://www.npmjs.com/package/node-red-contrib-norelite">Norelite</a></li>
-    </ul>
+<script type="text/markdown" data-help-name="nrl-timelimit in">
+Limits messages based on the configured time window.
+
+### When to use
+Use to allow or block Norelite instructions during a configured time interval (for example office hours).
+
+### Inputs
+: msg.payload (object) : Norelite message format. 
+
+### Outputs
+: msg.payload (object) : Norelite message format. The node sets `msg.payload.enabled` to true when the current time is within the configured `From`–`To` interval (and the incoming payload indicates enabled); otherwise it sets `msg.payload.enabled` to false.
+
+### Behaviour
+The node compares the local current time to the `From` and `To` settings. The interval may span midnight (for example `23:00` to `06:00`). When outside the interval the node forces `msg.payload.enabled = false`.
+
+### Example Norelite message
+: id (string) : Unique message ID that is generated from source/sending node. Used to track and store incoming messages.
+: enabled (boolean) : true = On, false = Off
+: dim (number) : Dim level (0-100)
+: color (string) : Color in hex format
+: priority (number) : Priority level (higher number = higher priority)
+```json
+{
+    "id": "556e7ed8b3db354e",
+    "enabled": true,
+    "dim": 80,
+    "color": "#FFFFFF", 
+    "priority": 5
+}
+```
 </script>
 <script type="text/javascript">
     /* when saving the form */
