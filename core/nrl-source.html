@@ -73,7 +73,7 @@
 Exposes and stores a single named value for evaluation nodes. Optionally forwards the value, persists it to flow context, applies hysteresis, provides toggle/cycle behaviour, and can expire to a fallback value.
 
 ### When to use
-: (none) : Use when you need a single source-of-truth value for rules/evaluations, a simple toggle or counter, or to persist/restore a value across deploys/restarts.
+Use when you need a single source-of-truth value for rules/evaluations, a simple toggle or counter, or to persist/restore a value across deploys/restarts.
 
 ### Inputs
 : msg.payload (object|string|number|boolean) : Incoming value. If the payload is a Norelite message object the node uses `msg.payload.enabled`. Numeric strings are converted to numbers.
@@ -83,23 +83,24 @@ Exposes and stores a single named value for evaluation nodes. Optionally forward
 : msg.payload (object|string|number|boolean) : Emitted when **Use output** is enabled and the node accepts a change.
 
 ### Properties (editor settings)
-: config (nrl-config) : Shared config node used to emit updates to `nrl-eval` nodes.
-: def (any) : Initial value emitted on deploy if no saved value exists.
-: save (boolean) : Persistent value (flow) — store last value in flow context and restore on deploy.
-: toggle (boolean) : Toggle mode — flip between 0 and 1 on each input.
-: cycle (boolean) : Cycle mode — increment 0..cyclen on each input.
-: output (boolean) : Use output — forward accepted value to downstream nodes.
-: expire / expval (boolean/any) : Value can expire and fall back to `expval` after timeout.
-: hysteresis (number) : Numeric threshold — changes smaller than this are ignored.
+: config (nrl-config) : Global configuration node. Use the same config node for related nrl-source and nrl-eval nodes. It is used to emit changes from nrl-source nodes to linked nrl-eval nodes so they can re-evaluate their rules.
+: Initial value (any) : Initial value emitted on deploy if no saved value exists.
+: Value Can Expire / Expval (boolean/any) : Value can expire and fall back to `expval` after timeout.
+: Toggle (boolean) : Toggle mode — flip between 0 and 1 on each input.
+: Cycle (boolean) : Cycle mode — increment 0..cyclen on each input.
+: Persistent value (flow) (boolean) : Store last value in flow context and restore on deploy.
+: Use output (boolean) : Use output — forward accepted value to downstream nodes.
+: Hysteresis (number) : Numeric threshold — changes smaller than this are ignored.
 
 ### Behaviour
-: (none) : On deploy the node restores a saved flow value (if `save` enabled) or emits the configured Initial value after ~1s. On input, toggle/cycle modes override the incoming payload; Norelite-format messages use `msg.payload.enabled`. Hysteresis applies only to numeric comparisons. Accepted values are emitted to evaluation nodes (deduplicated), optionally forwarded, saved to flow context, and may start an expiration timer that emits `expval` when it fires. On close timers and local state are cleared.
+On deploy the node restores a saved flow value (if `save` enabled) or emits the configured Initial value after ~1s. On input, toggle/cycle modes override the incoming payload; Norelite-format messages use `msg.payload.enabled`. Hysteresis applies only to numeric comparisons. Accepted values are emitted to evaluation nodes (deduplicated), optionally forwarded, saved to flow context, and may start an expiration timer that emits when it fires.
 
 ### Examples
-: (none) : Toggle button — wire an Inject node to this node with **Toggle** enabled to flip between `0` and `1`. Persistent sensor — enable **Use output** and **Persistant value (flow)** to restore the last value after restart.
+Toggle button — wire an Inject node to this node with **Toggle** enabled to flip between `0` and `1`. Persistent sensor — enable **Use output** and **Persistant value (flow)** to restore the last value after restart.
 
 ### Notes
-: (none) : Emissions to evaluation nodes are deduplicated. Hysteresis only applies to numeric comparisons. Persistence requires a configured context store to survive Node-RED restarts.
+- Emissions to evaluation nodes are deduplicated. Hysteresis only applies to numeric comparisons.
+- Persistence requires a configured context store to survive Node-RED restarts. See details at https://nodered.org/docs/user-guide/context on how to configure context storage and to store data to the local filesystem (default is in-memory only).
 
 </script>
 <script type="text/javascript">
