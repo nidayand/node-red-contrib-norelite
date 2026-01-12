@@ -68,7 +68,7 @@
 Change or override fields in a Norelite-formatted `msg.payload` object.
 
 ### When to use
-: (none) : Use `nrl-set` to adjust specific fields of a Norelite payload (for example `enabled`, `type`, `dim`, or `color`) before forwarding to a downstream node such as `nrl-switch` or a device node.
+Use `nrl-set` to adjust specific fields of a Norelite payload (for example `enabled`, `priority`, `dim`, or `color`) before forwarding to a downstream node such as `nrl-switch` or a device node.
 
 ### Inputs
 : msg.payload (object) : Norelite message format.
@@ -77,13 +77,13 @@ Change or override fields in a Norelite-formatted `msg.payload` object.
 : msg.payload (object) : Norelite message format with the selected fields modified according to the node settings.
 
 ### Settings
-: enabled / denabled (string) : Configure whether to override `msg.payload.enabled` (values: leave unchanged / force true / force false).
-: istype / distype (number) : Type to use for priority decisions (default 0).
-: dim / ddim (number) : Dim level (0–100). Leave empty to keep incoming value.
-: color / dcolor (string) : Color hex (e.g. `#FFFFFF`). Leave empty to keep incoming value.
+: enabled / disabled (string) : Configure whether to override `msg.payload.enabled` (values: leave unchanged / force true / force false).
+: priority (number) : Change the priority of the message (default 0).
+: dim (number) : Dim level (0–100). Leave empty to keep incoming value.
+: color (string) : Color hex (e.g. `#FFFFFF`). Leave empty to keep incoming value.
 
 ### Behaviour
-: (none) : When a message arrives the node updates only the fields configured; unspecified fields are left unchanged. Useful to escalate priority or set fixed brightness/color before arbitration in `nrl-switch`.
+ When a message arrives the node updates only the fields configured; unspecified fields are left unchanged. Useful to escalate priority or set fixed brightness/color before arbitration in `nrl-switch`.
 
 ### References
 : (link) : https://www.npmjs.com/package/node-red-contrib-norelite
