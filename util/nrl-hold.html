@@ -35,7 +35,7 @@
 Holds an instruction for a configured time window before allowing the opposite state to pass.
 
 ### When to use
-: (none) : Use `nrl-hold` to debounce or enforce minimum-on/minimum-off durations for commands (for example, keep a device on for at least N minutes after it turns on).
+Use `nrl-hold` to debounce or enforce minimum-on/minimum-off durations for commands (for example, keep a device on for at least N minutes after it turns on).
 
 ### Inputs
 : msg.payload (object) : Norelite message format.
@@ -44,19 +44,18 @@ Holds an instruction for a configured time window before allowing the opposite s
 : msg.payload (object) : Norelite message format. The node forwards messages but may delay or suppress opposite-state messages while the hold timer is active.
 
 ### Settings
-: positive (boolean) : Hold On — when checked, hold `enabled=true` messages for the configured duration.
-: negative (boolean) : Hold Off — when checked, hold `enabled=false` messages for the configured duration.
-: from (select) : Hold from — choose when the timer starts: when the hold-state changes or when a new state is received.
-: timeout (number + units) : For — the duration of the hold.
+: Hold On (boolean) : Hold `enabled=true` messages for the configured duration.
+: Hold Off (boolean) : Hold `enabled=false` messages for the configured duration.
+: Hold from (select) : Choose when the timer starts: when the hold-state changes or when a new state is received.
+: For (number + units) : For — the duration of the hold.
 
 ### Behaviour
-: (none) : If the node is configured to hold a state, it suppresses or delays the opposite state until the configured duration has elapsed according to the selected start behaviour.
+If the node is configured to hold a state, it suppresses or delays the opposite state until the configured duration has elapsed according to the selected start behaviour.
 
 ### Examples
-: (none) : Example — with Hold On = 5 minutes and start = "when it changed state", an incoming `enabled=true` starts the timer and the node will keep the `true` state for at least 5 minutes even if a `false` message arrives earlier.
+Example — with Hold On = 5 minutes and start = "when it changed state", an incoming `enabled=true` starts the timer and the node will keep the `true` state for at least 5 minutes even if a `false` message arrives earlier.
 
 ### References
-: (link) : https://www.npmjs.com/package/node-red-contrib-norelite
 : (example) : Import -> Examples -> node-red-contrib-norelite -> hold
 
 </script>
