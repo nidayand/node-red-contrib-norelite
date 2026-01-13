@@ -1,0 +1,60 @@
+
+<!-- HTML -->
+<script type="text/x-red" data-template-name="lights-out">
+    <div class="form-row">
+        <label for="node-input-code"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-toggle" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-toggle" style="width: 70%;">Toggle</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-transition"><i class="fa fa-clock-o"></i> Transition</label>
+        <input type="text" id="node-input-transition" placeholder="Time" style="width:50px !important"> seconds
+    </div>
+</script>
+<script type="text/markdown" data-help-name="lights-out">
+Convert the Norelite payload into a format for the node-red-contrib-home-assistant-websocket "action" node input format to control lights.
+
+### When to use
+Use this node when you want to control lights in Home Assistant based on Norelite messages. Use the Home Assistant `action` node to call the appropriate light service with the output from this node. Set the entity or entities to be actioned in the Home Assistant `action` node.
+
+### Inputs
+- `payload` (object): The payload of the message to publish in Norelite message format with the optional `transition` property. `transition` is the time in seconds to transition between states.
+
+### Output
+- `msg.payload` (object): The message payload formatted for Home Assistant light control.
+
+### Settings
+- `toggle` (boolean): Optional — toggle the light state.
+- `transition` (number): Optional — default transition time in seconds if not provided in the payload.
+
+## Details
+
+- `msg.payload` is required and follows the Norelite messaging format. `msg.payload.transition` is optional; default is 1 second if not set.
+- `msg.payload.enabled` controls on/off. `msg.payload.type` is required by Norelite but not used to drive the light here.
+- `msg.payload.dim` sets brightness (0–100). `msg.payload.color` is HEX color.
+- Toggle can be set by `msg.toggle = true` or by the node's checkbox. Note: `msg.payload.enabled` must be `true` to turn the light on; otherwise it will turn off. If the node's toggle option is enabled, an incoming `msg.toggle` will not override it.
+- Transition time can be provided in `msg.payload.transition` or overridden by the node's configuration value.
+
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('lights-out', {
+        category: 'norelite_hass-output',
+        color: "#34ebde",
+        defaults: {
+            name: {value: "", required: false},
+            toggle: {value: false, required: true},
+            transition: {value: "", required: false}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-lightbulb-o",
+        align: "right",
+        label: function() {
+            return (this.name || "");
+        }
+    });
+</script>

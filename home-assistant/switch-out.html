@@ -1,0 +1,51 @@
+
+<!-- HTML -->
+<script type="text/x-red" data-template-name="switch-out">
+    <div class="form-row">
+        <label for="node-input-code"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-toggle" placeholder="Only" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-toggle" style="width: 70%;">Toggle</label>
+    </div>
+</script>
+<script type="text/markdown" data-help-name="switch-out">
+Convert the Norelite payload into a format for the node-red-contrib-home-assistant-websocket "action" node input format to control switches.
+
+### When to use
+Use this node when you want to control switches in Home Assistant based on Norelite messages. Use the Home Assistant `action` node to call the appropriate switch service with the output from this node. Set the entity or entities to be actioned in the Home Assistant `action` node.
+
+### Inputs
+- `payload` (object): The payload of the message to publish in Norelite message format.
+
+### Output
+- `msg.payload` (object): The message payload formatted for Home Assistant switch control.
+
+### Settings
+- `toggle` (boolean): Optional — toggle the switch state.
+
+### Details
+- `msg.payload` is required and must follow the Norelite messaging format.
+- `msg.payload.enabled` defines if a switch should be turned on or off. Other fields are part of the Norelite format but do not affect switch behavior here.
+- Toggle can be set by `msg.toggle = true` or via the node's checkbox. Note: `msg.payload.enabled` must be `true` to turn the switch on; otherwise it will turn off. If the node's toggle option is enabled, an incoming `msg.toggle` will not override it.
+
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('switch-out', {
+        category: 'norelite_hass-output',
+        color: "#34ebde",
+        defaults: {
+            name: {value: "", required: false},
+            toggle: {value: false, required: true}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-plug",
+        align: "right",
+        label: function() {
+            return (this.name || "");
+        }
+    });
+</script>
