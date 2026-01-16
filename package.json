@@ -36,5 +36,11 @@
       "light-out": "home-assistant/light-out.js",
       "switch-out": "home-assistant/switch-out.js"
     }
+  },
+  "scripts": {
+    "dev": "nodemon --watch . --ext js,json --exec \"node-red -u .\""
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }

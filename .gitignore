@@ -1,1 +1,6 @@
 node_modules/
+settings.js
+.config.nodes.json
+.config.runtime.json
+.config.runtime.json.backup
+package-lock.json
