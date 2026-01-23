@@ -1,0 +1,187 @@
+[
+    {
+        "id": "cd30124c8ca30ed3",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4381e5205b852cbb",
+        "type": "debug",
+        "z": "cd30124c8ca30ed3",
+        "name": "Simulating Home-Assistant light",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.service",
+        "targetType": "msg",
+        "statusVal": "payload.service",
+        "statusType": "auto",
+        "x": 1070,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "1552b3b27146b970",
+        "type": "lights-out",
+        "z": "cd30124c8ca30ed3",
+        "name": "",
+        "toggle": false,
+        "transition": "",
+        "x": 840,
+        "y": 200,
+        "wires": [
+            [
+                "4381e5205b852cbb"
+            ]
+        ]
+    },
+    {
+        "id": "a4155126433e5969",
+        "type": "comment",
+        "z": "cd30124c8ca30ed3",
+        "name": "Description",
+        "info": "Super simple scenario setting the light on between certain times and days",
+        "x": 110,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "8f69d4107d3f8dfb",
+        "type": "nrl-on in",
+        "z": "cd30124c8ca30ed3",
+        "name": "",
+        "x": 90,
+        "y": 200,
+        "wires": [
+            [
+                "1afd11d84e59f2d6",
+                "a1aca1f54168e9ee"
+            ]
+        ]
+    },
+    {
+        "id": "04227ba903d6c463",
+        "type": "nrl-timelimit in",
+        "z": "cd30124c8ca30ed3",
+        "to": "09:00",
+        "from": "06:00",
+        "x": 510,
+        "y": 200,
+        "wires": [
+            [
+                "910bd855a77bbac0"
+            ]
+        ]
+    },
+    {
+        "id": "1afd11d84e59f2d6",
+        "type": "nrl-dayslimit in",
+        "z": "cd30124c8ca30ed3",
+        "mon": true,
+        "tue": true,
+        "wed": true,
+        "thu": true,
+        "fri": true,
+        "sat": false,
+        "sun": false,
+        "x": 280,
+        "y": 200,
+        "wires": [
+            [
+                "04227ba903d6c463",
+                "3ea858ab3f9d2ba4"
+            ]
+        ]
+    },
+    {
+        "id": "a1aca1f54168e9ee",
+        "type": "nrl-dayslimit in",
+        "z": "cd30124c8ca30ed3",
+        "mon": false,
+        "tue": false,
+        "wed": false,
+        "thu": false,
+        "fri": false,
+        "sat": true,
+        "sun": true,
+        "x": 240,
+        "y": 260,
+        "wires": [
+            [
+                "dd41861eb638e84d",
+                "ba931ec8a4212436"
+            ]
+        ]
+    },
+    {
+        "id": "3ea858ab3f9d2ba4",
+        "type": "nrl-timelimit in",
+        "z": "cd30124c8ca30ed3",
+        "to": "21:00",
+        "from": "17:00",
+        "x": 510,
+        "y": 260,
+        "wires": [
+            [
+                "910bd855a77bbac0"
+            ]
+        ]
+    },
+    {
+        "id": "dd41861eb638e84d",
+        "type": "nrl-timelimit in",
+        "z": "cd30124c8ca30ed3",
+        "to": "10:00",
+        "from": "09:00",
+        "x": 510,
+        "y": 340,
+        "wires": [
+            [
+                "910bd855a77bbac0"
+            ]
+        ]
+    },
+    {
+        "id": "ba931ec8a4212436",
+        "type": "nrl-timelimit in",
+        "z": "cd30124c8ca30ed3",
+        "to": "23:00",
+        "from": "17:00",
+        "x": 510,
+        "y": 380,
+        "wires": [
+            [
+                "910bd855a77bbac0"
+            ]
+        ]
+    },
+    {
+        "id": "910bd855a77bbac0",
+        "type": "nrl-switch out",
+        "z": "cd30124c8ca30ed3",
+        "name": "",
+        "repeat": 10,
+        "repeatUnits": "minutes",
+        "once": true,
+        "x": 690,
+        "y": 200,
+        "wires": [
+            [
+                "1552b3b27146b970"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "5618f1b0996b43e2",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@nidayand/node-red-contrib-norelite": "3.0.0"
+        }
+    }
+]

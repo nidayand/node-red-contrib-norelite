@@ -1,0 +1,256 @@
+[
+    {
+        "id": "cd30124c8ca30ed3",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ad7410a85077138c",
+        "type": "inject",
+        "z": "cd30124c8ca30ed3",
+        "name": "Simulating Home-Assistant button state",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 210,
+        "y": 140,
+        "wires": [
+            [
+                "cdd44315b512aeff"
+            ]
+        ]
+    },
+    {
+        "id": "cdd44315b512aeff",
+        "type": "nrl-source out",
+        "z": "cd30124c8ca30ed3",
+        "config": "2f4c2ea63bcb0cdf",
+        "uid": "1ad6a11c-78d7-4a56-b97f-443757538a18",
+        "name": "Button state",
+        "def": "0",
+        "expire": false,
+        "timeout": 100,
+        "timeoutUnits": "seconds",
+        "expval": "false",
+        "output": false,
+        "hysteresis": 0,
+        "toggle": true,
+        "cycle": false,
+        "cyclen": "3",
+        "save": false,
+        "outputs": 0,
+        "x": 550,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "cd5d991d846374b0",
+        "type": "nrl-eval in",
+        "z": "cd30124c8ca30ed3",
+        "config": "2f4c2ea63bcb0cdf",
+        "name": "Button state evaluation",
+        "rules": [
+            {
+                "s": "1ad6a11c-78d7-4a56-b97f-443757538a18",
+                "t": "eq",
+                "v": "1"
+            }
+        ],
+        "checkall": "true",
+        "inputson": false,
+        "outputdelay": true,
+        "disablerepeat": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "a5b96d308e913d23"
+            ]
+        ]
+    },
+    {
+        "id": "4381e5205b852cbb",
+        "type": "debug",
+        "z": "cd30124c8ca30ed3",
+        "name": "Simulating Home-Assistant light",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.service",
+        "targetType": "msg",
+        "statusVal": "payload.service",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "1552b3b27146b970",
+        "type": "lights-out",
+        "z": "cd30124c8ca30ed3",
+        "name": "",
+        "toggle": false,
+        "transition": "",
+        "x": 760,
+        "y": 300,
+        "wires": [
+            [
+                "4381e5205b852cbb"
+            ]
+        ]
+    },
+    {
+        "id": "a4155126433e5969",
+        "type": "comment",
+        "z": "cd30124c8ca30ed3",
+        "name": "Description",
+        "info": "The  scenario is simulating an Home Assistant events:state node and the sensor data from a PIR.\n 1. When a button is pressed it will get the state from HA and save in a nrl-source node. Same with the PIR. \n 1. If any of button state or the PIR is active (with delay of 10s turnoff) the light will be on, else off\n 1. PIR state expired automatically after 5s",
+        "x": 110,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "9be7b58b45276804",
+        "type": "inject",
+        "z": "cd30124c8ca30ed3",
+        "name": "Simulating Home-Assistant PIR",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "e6049f37959a4bbf"
+            ]
+        ]
+    },
+    {
+        "id": "e6049f37959a4bbf",
+        "type": "nrl-source out",
+        "z": "cd30124c8ca30ed3",
+        "config": "2f4c2ea63bcb0cdf",
+        "uid": "f3e4f789-e8dd-4247-cfcc-88d6e66d3dde",
+        "name": "PIR",
+        "def": "0",
+        "expire": true,
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "expval": "0",
+        "output": false,
+        "hysteresis": 0,
+        "toggle": true,
+        "cycle": false,
+        "cyclen": "3",
+        "save": false,
+        "outputs": 0,
+        "x": 530,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "b52600051e32e399",
+        "type": "nrl-eval in",
+        "z": "cd30124c8ca30ed3",
+        "config": "2f4c2ea63bcb0cdf",
+        "name": "PIR state evaluation",
+        "rules": [
+            {
+                "s": "f3e4f789-e8dd-4247-cfcc-88d6e66d3dde",
+                "t": "eq",
+                "v": "1"
+            }
+        ],
+        "checkall": "true",
+        "inputson": false,
+        "outputdelay": true,
+        "disablerepeat": false,
+        "inputs": 0,
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "43fd27e9f6c41142"
+            ]
+        ]
+    },
+    {
+        "id": "43fd27e9f6c41142",
+        "type": "nrl-hold in",
+        "z": "cd30124c8ca30ed3",
+        "negative": false,
+        "positive": true,
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "from": 1,
+        "x": 370,
+        "y": 400,
+        "wires": [
+            [
+                "a5b96d308e913d23"
+            ]
+        ]
+    },
+    {
+        "id": "a5b96d308e913d23",
+        "type": "nrl-switch out",
+        "z": "cd30124c8ca30ed3",
+        "name": "",
+        "repeat": 10,
+        "repeatUnits": "minutes",
+        "once": true,
+        "x": 570,
+        "y": 300,
+        "wires": [
+            [
+                "1552b3b27146b970"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "2f4c2ea63bcb0cdf",
+        "type": "nrl-config",
+        "delay": 5,
+        "name": "Simple"
+    },
+    {
+        "id": "4c7bc3a4f61034d9",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@nidayand/node-red-contrib-norelite": "3.0.0"
+        }
+    }
+]

@@ -1,0 +1,161 @@
+[
+    {
+        "id": "cd30124c8ca30ed3",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ad7410a85077138c",
+        "type": "inject",
+        "z": "cd30124c8ca30ed3",
+        "name": "Simulating Home-Assistant button state",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 210,
+        "y": 140,
+        "wires": [
+            [
+                "cdd44315b512aeff"
+            ]
+        ]
+    },
+    {
+        "id": "cdd44315b512aeff",
+        "type": "nrl-source out",
+        "z": "cd30124c8ca30ed3",
+        "config": "2f4c2ea63bcb0cdf",
+        "uid": "1ad6a11c-78d7-4a56-b97f-443757538a18",
+        "name": "Button state",
+        "def": "0",
+        "expire": false,
+        "timeout": 100,
+        "timeoutUnits": "seconds",
+        "expval": "false",
+        "output": false,
+        "hysteresis": 0,
+        "toggle": true,
+        "cycle": false,
+        "cyclen": "3",
+        "save": false,
+        "outputs": 0,
+        "x": 550,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "cd5d991d846374b0",
+        "type": "nrl-eval in",
+        "z": "cd30124c8ca30ed3",
+        "config": "2f4c2ea63bcb0cdf",
+        "name": "Button state evaluation",
+        "rules": [
+            {
+                "s": "1ad6a11c-78d7-4a56-b97f-443757538a18",
+                "t": "eq",
+                "v": "1"
+            }
+        ],
+        "checkall": "true",
+        "inputson": false,
+        "outputdelay": true,
+        "disablerepeat": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "659dadbe33b0e18e"
+            ]
+        ]
+    },
+    {
+        "id": "659dadbe33b0e18e",
+        "type": "nrl-hold in",
+        "z": "cd30124c8ca30ed3",
+        "negative": false,
+        "positive": true,
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "from": 1,
+        "x": 380,
+        "y": 220,
+        "wires": [
+            [
+                "1552b3b27146b970"
+            ]
+        ]
+    },
+    {
+        "id": "4381e5205b852cbb",
+        "type": "debug",
+        "z": "cd30124c8ca30ed3",
+        "name": "Simulating Home-Assistant light",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.service",
+        "targetType": "msg",
+        "statusVal": "payload.service",
+        "statusType": "auto",
+        "x": 830,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "1552b3b27146b970",
+        "type": "lights-out",
+        "z": "cd30124c8ca30ed3",
+        "name": "",
+        "toggle": false,
+        "transition": "",
+        "x": 560,
+        "y": 220,
+        "wires": [
+            [
+                "4381e5205b852cbb"
+            ]
+        ]
+    },
+    {
+        "id": "a4155126433e5969",
+        "type": "comment",
+        "z": "cd30124c8ca30ed3",
+        "name": "Description",
+        "info": "The  scenario is simulating an Home Assistant events:state node.\n 1. When a button is pressed it will get the state from HA and save in a nrl-source node. \n 1. The nrl-source node will trigger an event when changed and \"Button state evaluation\"/nrl-evl node will assess the rules\n 1. If the button state=1 it will send an msg.payload.enabled=true event through the flow else false\n 1. The Hold On node will keep the light on for 5 seconds when changing from on to off\n 1. Finally the Norelite message format will be converted to a format that HA understands\n 1. Simulating the Home Assistant action node\n",
+        "x": 110,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "2f4c2ea63bcb0cdf",
+        "type": "nrl-config",
+        "delay": 5,
+        "name": "Simple"
+    },
+    {
+        "id": "5c8ee4bf95889e50",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@nidayand/node-red-contrib-norelite": "3.0.0"
+        }
+    }
+]
