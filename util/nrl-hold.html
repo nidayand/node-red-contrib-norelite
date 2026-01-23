@@ -81,6 +81,11 @@ Example — with Hold On = 5 minutes and start = "when it changed state", an inc
                 txt+="Hold";
                 txt+= (this.positive? " On":"");
                 txt+= (this.negative? ((this.positive? "/Off":" Off")) : "");
+                if (this.timeout) {
+                    var units = this.timeoutUnits;
+                    var shortUnits = units.charAt(0).toLowerCase();
+                    txt+= " " + this.timeout + shortUnits;
+                }
             } else {
                 txt = "No hold";
             }
