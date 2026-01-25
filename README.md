@@ -24,7 +24,7 @@ Simplified, **node-red-contrib-norelite** is a set of Node-RED nodes that are de
 The simplest flow of events is:
 1. Store an incoming value in a **source node**
 2. A rule will compare the value in a **rule node**
-4. A **device node** converts the internal messaging format to an instruction that can be understood by the transmitting node. E.g. Tellstick (node-red-contrib-tellstick), Z-wave (node-red-contrib-openzwave), rfxcom (node-red-contrib-rfxcom) or any custom node as the messaging format is simple.
+4. A **Home Assistant helper node** converts the internal messaging format to an instruction that can be understood by the Home Assistant action node
 
 But there is much more to it... and the nodes should be well described in the node descriptions.
 
