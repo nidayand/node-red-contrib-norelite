@@ -4,3 +4,7 @@ settings.js
 .config.runtime.json
 .config.runtime.json.backup
 package-lock.json
+.config.users.json
+.config.users.json.backup
+.DS_Store
+
