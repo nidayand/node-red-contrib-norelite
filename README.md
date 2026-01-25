@@ -1,5 +1,11 @@
 # node-red-contrib-norelite [![npm version](https://badge.fury.io/js/node-red-contrib-norelite.svg)](https://badge.fury.io/js/node-red-contrib-norelite)
 A set of Node-RED nodes to ease the implementation of your home automation requirements by using visual rules to manage the state your devices.
+
+*BREAKING CHANGES v3.0.0*
+- v2.8.1 is till the latest published version using the old name (not the scope).
+- Removed the devices nodes that will be moved to a seperate repo
+- Including the home assistant helper nodes as default in this repo from [node-red-contrib-norelite-homeassistant](https://www.npmjs.com/package/node-red-contrib-norelite-homeassistant)
+
 ## Install
 ```bash
 cd ~/.node-red
