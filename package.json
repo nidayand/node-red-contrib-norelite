@@ -9,7 +9,7 @@
   "dependencies": {
     "date-utils": "^1.2.21",
     "events": "^3.3.0",
-    "underscore": "^1.13.7",
+    "underscore": "^1.13.8",
     "when": "^3.7.8"
   },
   "repository": {
